@@ -1,5 +1,7 @@
 ﻿using CBS.Reinaldo.Reversi.Entity;
+using CBS.Reinaldo.Reversi.Utility;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -16,6 +18,8 @@ namespace CBS.Reinaldo.Reversi
         private Player _CurrentTurn;
         private Label _PlayerTurnLabel;
 
+        private IEnumerable<Button> _Board;
+
         public Form1()
         {
             InitializeComponent();
@@ -28,6 +32,8 @@ namespace CBS.Reinaldo.Reversi
             
             _PlayerTurnLabel = Controls.Find("playerlabel", false).First() as Label;
             _PlayerTurnLabel.Text = _CurrentTurn.PlayerSide.Name;
+
+            _EnablePossiblePanel(_CurrentTurn);
         }
 
         private Button _CreatePanel(int index)
@@ -46,7 +52,8 @@ namespace CBS.Reinaldo.Reversi
                 BackColor = Color.Lime,
                 Text = "",
                 Location = location,
-                TabIndex = index
+                TabIndex = index,
+                Enabled = false
             };
             btn.Click += new EventHandler(_GetMove);
             return btn;
@@ -56,6 +63,7 @@ namespace CBS.Reinaldo.Reversi
         {
             Button btn = (Button)sender;
             //CheckMove
+            //Auto valid
 
             //MakeMove
             _MakeMove(btn);
@@ -65,34 +73,36 @@ namespace CBS.Reinaldo.Reversi
 
         private void _MakeMove(Control btn)
         {
-            var index = Controls.GetChildIndex(btn);
-            if (_CurrentTurn.PlayerSide == Color.Black)
-            {
-                Controls[index].BackColor = Color.Black;
-            }
-            else if (_CurrentTurn.PlayerSide == Color.White)
-            {
-                Controls[index].BackColor = Color.White;
-            }
-            else
-            {
-                throw new Exception("Current player color undefined");
-            }
-            btn.Enabled = false;
+            var index = _Board.ToList().FindIndex(item => item.Name == btn.Name);
+            _Board.ElementAt(index).BackColor = _CurrentTurn.PlayerSide == Color.Black ? Color.Black : Color.White;
+
+
+            _CurrentTurn.AcquiredPanels.Add(index);
         }
 
         private void _NextTurn()
         {
-            if(_CurrentTurn.PlayerSide == Color.Black)
-            {
-                _CurrentTurn = _WhitePlayer;
-            }
-            else
-            {
-                _CurrentTurn = _BlackPlayer;
-            }
+            BoardUtility.ResetPanelAccessAndText(_Board);
+            
+            _CurrentTurn = _CurrentTurn.PlayerSide == Color.Black ? _WhitePlayer : _BlackPlayer;
+
+            _EnablePossiblePanel(_CurrentTurn);
 
             _PlayerTurnLabel.Text = _CurrentTurn.PlayerSide.Name;
+        }
+
+        private void _EnablePossiblePanel(Player player)
+        {
+            foreach(var panelIndex in player.AcquiredPanels)
+            {
+                BoardUtility.EnableNorth(_Board, player, panelIndex);
+                BoardUtility.EnableNorthEast(_Board, player, panelIndex);
+                BoardUtility.EnableEast(_Board, player, panelIndex);
+                BoardUtility.EnableSouthEast(_Board, player, panelIndex);
+                BoardUtility.EnableSouth(_Board, player, panelIndex);
+                BoardUtility.EnableSouthWest(_Board, player, panelIndex);
+                BoardUtility.EnableWest(_Board, player, panelIndex);
+            }
         }
         
         private void _InitializeBoard()
@@ -102,6 +112,7 @@ namespace CBS.Reinaldo.Reversi
             {
                 Controls.Add(_CreatePanel(i));
             }
+            _Board = Controls.OfType<Button>();
 
             //Initialize Disks
             _InitializeDisks();
@@ -109,22 +120,21 @@ namespace CBS.Reinaldo.Reversi
 
         private void _InitializeDisks()
         {
-            var buttons = Controls.OfType<Button>();
             Button panel;
             
             //28 35 White
             _CurrentTurn = _WhitePlayer;
-            panel = buttons.Single(b => b.TabIndex == 28);
+            panel = _Board.Single(b => b.Name == 28.ToString());
             _MakeMove(panel);
-            panel = buttons.Single(b => b.TabIndex == 35);
+            panel = _Board.Single(b => b.Name == 35.ToString());
             _MakeMove(panel);
 
             //27 36 Black
             _CurrentTurn = _BlackPlayer;
-            panel = buttons.Single(b => b.TabIndex == 27);
+            panel = _Board.Single(b => b.Name == 27.ToString());
             _MakeMove(panel);
             panel.BackColor = Color.Black;
-            panel = buttons.Single(b => b.TabIndex == 36);
+            panel = _Board.Single(b => b.Name == 36.ToString());
             _MakeMove(panel);
         }
 
