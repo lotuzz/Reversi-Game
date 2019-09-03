@@ -62,11 +62,13 @@ namespace CBS.Reinaldo.Reversi
         private void _GetMove(object sender, EventArgs e)
         {
             Button btn = (Button)sender;
-            //CheckMove
-            //Auto valid
 
             //MakeMove
             _MakeMove(btn);
+
+            //Acquire Panels
+            var enemy = _CurrentTurn.PlayerSide == Color.Black ? _WhitePlayer : _BlackPlayer;
+            BoardUtility.TryAcquiringPanels(_Board, _CurrentTurn, enemy, int.Parse(btn.Name));
 
             _NextTurn();
         }
@@ -75,9 +77,8 @@ namespace CBS.Reinaldo.Reversi
         {
             var index = _Board.ToList().FindIndex(item => item.Name == btn.Name);
             _Board.ElementAt(index).BackColor = _CurrentTurn.PlayerSide == Color.Black ? Color.Black : Color.White;
-
-
-            _CurrentTurn.AcquiredPanels.Add(index);
+            
+            _CurrentTurn.AcquirePanel((Button)btn);
         }
 
         private void _NextTurn()
