@@ -26,7 +26,11 @@ namespace CBS.Reinaldo.Reversi.Utility
             if (count == 0) return;
 
             var lastPanelIndex = int.Parse(northPanels.Last().Name) - 8;
+            if (lastPanelIndex < 0) return;
+
             var lastPanel = board.ElementAt(lastPanelIndex);
+            if (lastPanel.BackColor != Color.Lime) return;
+
             lastPanel.Enabled = true;
             lastPanel.ForeColor = player.PlayerSide;
             if(string.IsNullOrEmpty(lastPanel.Text))
@@ -49,7 +53,11 @@ namespace CBS.Reinaldo.Reversi.Utility
             if (count == 0) return;
 
             var lastPanelIndex = int.Parse(southPanels.Last().Name) + 8;
+            if (lastPanelIndex > 63) return;
+
             var lastPanel = board.ElementAt(lastPanelIndex);
+            if (lastPanel.BackColor != Color.Lime) return;
+
             lastPanel.Enabled = true;
             lastPanel.ForeColor = player.PlayerSide;
             if (string.IsNullOrEmpty(lastPanel.Text))
@@ -71,8 +79,13 @@ namespace CBS.Reinaldo.Reversi.Utility
             int count = eastPanels.Count();
             if (count == 0) return;
 
-            var lastPanelIndex = int.Parse(eastPanels.Last().Name) + 1;
+            var lastPanelIndex = int.Parse(eastPanels.Last().Name);
+            if ((lastPanelIndex % 8) + 1 > 7) return;
+            else lastPanelIndex += 1;
+
             var lastPanel = board.ElementAt(lastPanelIndex);
+            if (lastPanel.BackColor != Color.Lime) return;
+
             lastPanel.Enabled = true;
             lastPanel.ForeColor = player.PlayerSide;
             if (string.IsNullOrEmpty(lastPanel.Text))
@@ -94,8 +107,13 @@ namespace CBS.Reinaldo.Reversi.Utility
             int count = westPanels.Count();
             if (count == 0) return;
 
-            var lastPanelIndex = int.Parse(westPanels.Last().Name) - 1;
+            var lastPanelIndex = int.Parse(westPanels.Last().Name);
+            if ((lastPanelIndex % 8) - 1 > 7) return;
+            else lastPanelIndex -= 1;
+
             var lastPanel = board.ElementAt(lastPanelIndex);
+            if (lastPanel.BackColor != Color.Lime) return;
+
             lastPanel.Enabled = true;
             lastPanel.ForeColor = player.PlayerSide;
             if (string.IsNullOrEmpty(lastPanel.Text))
@@ -117,8 +135,16 @@ namespace CBS.Reinaldo.Reversi.Utility
             int count = northEastPanels.Count();
             if (count == 0) return;
 
-            var lastPanelIndex = int.Parse(northEastPanels.Last().Name) + 1 - 8;
+            var lastPanelIndex = int.Parse(northEastPanels.Last().Name) - 8;
+            if (lastPanelIndex < 0) return;
+
+            var modEast = (lastPanelIndex % 8) + 1;
+            if (modEast > 7) return;
+            else lastPanelIndex += 1;
+
             var lastPanel = board.ElementAt(lastPanelIndex);
+            if (lastPanel.BackColor != Color.Lime) return;
+
             lastPanel.Enabled = true;
             lastPanel.ForeColor = player.PlayerSide;
             if (string.IsNullOrEmpty(lastPanel.Text))
@@ -140,8 +166,16 @@ namespace CBS.Reinaldo.Reversi.Utility
             int count = southEastPanels.Count();
             if (count == 0) return;
 
-            var lastPanelIndex = int.Parse(southEastPanels.Last().Name) + 1 + 8;
+            var lastPanelIndex = int.Parse(southEastPanels.Last().Name) + 8;
+            if (lastPanelIndex > 63) return;
+
+            var modEast = (lastPanelIndex % 8) + 1;
+            if (modEast > 7) return;
+            else lastPanelIndex += 1;
+
             var lastPanel = board.ElementAt(lastPanelIndex);
+            if (lastPanel.BackColor != Color.Lime) return;
+
             lastPanel.Enabled = true;
             lastPanel.ForeColor = player.PlayerSide;
             if (string.IsNullOrEmpty(lastPanel.Text))
@@ -163,8 +197,16 @@ namespace CBS.Reinaldo.Reversi.Utility
             int count = southWestPanels.Count();
             if (count == 0) return;
 
-            var lastPanelIndex = int.Parse(southWestPanels.Last().Name) - 1 + 8;
+            var lastPanelIndex = int.Parse(southWestPanels.Last().Name) + 8;
+            if (lastPanelIndex > 63) return;
+
+            var modWest = (lastPanelIndex % 8) - 1;
+            if (modWest < 0) return;
+            else lastPanelIndex -= 1;
+
             var lastPanel = board.ElementAt(lastPanelIndex);
+            if (lastPanel.BackColor != Color.Lime) return;
+
             lastPanel.Enabled = true;
             lastPanel.ForeColor = player.PlayerSide;
             if (string.IsNullOrEmpty(lastPanel.Text))
@@ -186,8 +228,16 @@ namespace CBS.Reinaldo.Reversi.Utility
             int count = northWestPanels.Count();
             if (count == 0) return;
 
-            var lastPanelIndex = int.Parse(northWestPanels.Last().Name) - 1 - 8;
+            var lastPanelIndex = int.Parse(northWestPanels.Last().Name) - 8;
+            if (lastPanelIndex < 0) return;
+
+            var modWest = (lastPanelIndex % 8) - 1;
+            if (modWest < 0) return;
+            else lastPanelIndex -= 1;
+
             var lastPanel = board.ElementAt(lastPanelIndex);
+            if (lastPanel.BackColor != Color.Lime) return;
+
             lastPanel.Enabled = true;
             lastPanel.ForeColor = player.PlayerSide;
             if (string.IsNullOrEmpty(lastPanel.Text))

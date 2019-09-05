@@ -9,160 +9,225 @@ namespace CBS.Reinaldo.Reversi.Utility
     {
         public static IEnumerable<Button> GetNorthPanels(IEnumerable<Button> board, int startIndex, Color enemyColor)
         {
+            Color playerColor = enemyColor == Color.Black ? Color.White : Color.Black;
+
+            List<Button> result = new List<Button>();
             var index = startIndex - 8;
-            while (index >= 0)
+            if (index < 0) return result;
+
+            Button panel = board.ElementAt(index);
+            while ((panel.BackColor == enemyColor) && (index >= 0))
             {
-                var panel = board.ElementAt(index);
-                if (panel.BackColor != enemyColor) break;
-                yield return panel;
+                result.Add(panel);
 
                 index -= 8;
+                if (index < 0) return new List<Button>();
+                panel = board.ElementAt(index);
             }
+            
+            return result;
         }
 
         public static IEnumerable<Button> GetSouthPanels(IEnumerable<Button> board, int startIndex, Color enemyColor)
         {
+            Color playerColor = enemyColor == Color.Black ? Color.White : Color.Black;
+
+            List<Button> result = new List<Button>();
             var index = startIndex + 8;
-            while (index <= 63)
+            if (index > 63) return result;
+
+            Button panel = board.ElementAt(index);
+            while ((panel.BackColor == enemyColor) && (index <= 63))
             {
-                var panel = board.ElementAt(index);
-                if (panel.BackColor != enemyColor) break;
-                yield return panel;
+                result.Add(panel);
 
                 index += 8;
+                if (index > 63) return new List<Button>();
+                panel = board.ElementAt(index);
             }
+            
+            return result;
         }
 
         public static IEnumerable<Button> GetEastPanels(IEnumerable<Button> board, int startIndex, Color enemyColor)
         {
+            Color playerColor = enemyColor == Color.Black ? Color.White : Color.Black;
+
+            List<Button> result = new List<Button>();
             var index = startIndex;
             var mod = (index % 8) + 1;
-            while (mod <= 7)
-            {
-                index += 1;
+            if (mod > 7) return result;
 
-                var panel = board.ElementAt(index);
-                if (panel.BackColor != enemyColor) break;
-                yield return panel;
+            index += 1;
+            Button panel = board.ElementAt(index);
+            while ((panel.BackColor == enemyColor) && (mod <= 7))
+            {
+                result.Add(panel);
 
                 mod += 1;
+                if (mod > 7) return new List<Button>();
+                index += 1;
+                panel = board.ElementAt(index);
             }
+            
+            return result;
         }
 
         public static IEnumerable<Button> GetWestPanels(IEnumerable<Button> board, int startIndex, Color enemyColor)
         {
+            Color playerColor = enemyColor == Color.Black ? Color.White : Color.Black;
+
+            List<Button> result = new List<Button>();
             var index = startIndex;
             var mod = (index % 8) - 1;
-            while (mod >= 0)
-            {
-                index -= 1;
+            if (mod < 0) return result;
 
-                var panel = board.ElementAt(index);
-                if (panel.BackColor != enemyColor) break;
-                yield return panel;
+            index -= 1;
+            Button panel = board.ElementAt(index);
+            while ((panel.BackColor == enemyColor) && (mod >= 0))
+            {
+                result.Add(panel);
 
                 mod -= 1;
+                if (mod < 0) return new List<Button>();
+                index -= 1;
+                panel = board.ElementAt(index);
             }
+            
+            return result;
         }
 
         public static IEnumerable<Button> GetNorthEastPanels(IEnumerable<Button> board, int startIndex, Color enemyColor)
         {
+            Color playerColor = enemyColor == Color.Black ? Color.White : Color.Black;
+
+            List<Button> result = new List<Button>();
+
+            //check North
+            var northEastIndex = startIndex - 8;
+            if (northEastIndex < 0) return result;
+
             //check East
-            var northEastIndex = startIndex;
             var eastMod = (northEastIndex % 8) + 1;
-            if (eastMod <= 7)
+            if (eastMod > 7) return result;
+            else northEastIndex += 1;
+
+            Button panel = board.ElementAt(northEastIndex);
+            while ((panel.BackColor == enemyColor) && (northEastIndex >= 0))
             {
-                //move east
-                northEastIndex += 1;
+                result.Add(panel);
 
-                //move north
                 northEastIndex -= 8;
-                while (northEastIndex >= 0)
-                {
-                    var northEastPanel = board.ElementAt(northEastIndex);
-                    if (northEastPanel.BackColor != enemyColor) break;
-                    yield return northEastPanel;
+                if (northEastIndex < 0) return new List<Button>();
 
-                    eastMod = (northEastIndex % 8) + 1;
-                    if (eastMod > 7) break;
-                    northEastIndex -= 7;
-                }
+                eastMod = (northEastIndex % 8) + 1;
+                if (eastMod > 7) return new List<Button>();
+                else northEastIndex += 1;
+
+                panel = board.ElementAt(northEastIndex);
             }
+            
+            return result;
         }
 
         public static IEnumerable<Button> GetNorthWestPanels(IEnumerable<Button> board, int startIndex, Color enemyColor)
         {
+            Color playerColor = enemyColor == Color.Black ? Color.White : Color.Black;
+
+            List<Button> result = new List<Button>();
+
+            //check North
+            var northWestIndex = startIndex - 8;
+            if (northWestIndex < 0) return result;
+
             //check West
-            var northWestIndex = startIndex;
             var westMod = (northWestIndex % 8) - 1;
-            if (westMod <= 7)
+            if (westMod < 0) return result;
+            else northWestIndex -= 1;
+
+            Button panel = board.ElementAt(northWestIndex);
+            while ((panel.BackColor == enemyColor) && (northWestIndex >= 0))
             {
-                //move west
-                northWestIndex -= 1;
+                result.Add(panel);
 
-                //move north
                 northWestIndex -= 8;
-                while (northWestIndex >= 0)
-                {
-                    var northWestPanel = board.ElementAt(northWestIndex);
-                    if (northWestPanel.BackColor != enemyColor) break;
-                    yield return northWestPanel;
+                if (northWestIndex < 0) return new List<Button>();
 
-                    westMod = (northWestIndex % 8) - 1;
-                    if (westMod > 7) break;
-                    northWestIndex -= 9;
-                }
+                westMod = (northWestIndex % 8) - 1;
+                if (westMod < 0) return new List<Button>();
+                else northWestIndex -= 1;
+
+                panel = board.ElementAt(northWestIndex);
             }
+            
+            return result;
         }
 
         public static IEnumerable<Button> GetSouthEastPanels(IEnumerable<Button> board, int startIndex, Color enemyColor)
         {
+            Color playerColor = enemyColor == Color.Black ? Color.White : Color.Black;
+
+            List<Button> result = new List<Button>();
+
+            //check South
+            var southEastIndex = startIndex + 8;
+            if (southEastIndex > 63) return result;
+
             //check East
-            var southEastIndex = startIndex;
-            var eastMod = (southEastIndex % 8) + 1;
-            if (eastMod <= 7)
+            var westMod = (southEastIndex % 8) + 1;
+            if (westMod > 7) return result;
+            else southEastIndex += 1;
+
+            Button panel = board.ElementAt(southEastIndex);
+            while ((panel.BackColor == enemyColor) && (southEastIndex >= 0))
             {
-                //move east
-                southEastIndex += 1;
+                result.Add(panel);
 
-                //move south
                 southEastIndex += 8;
-                while (southEastIndex <= 63)
-                {
-                    var southEastPanel = board.ElementAt(southEastIndex);
-                    if (southEastPanel.BackColor != enemyColor) break;
-                    yield return southEastPanel;
+                if (southEastIndex > 63) return new List<Button>();
 
-                    eastMod = (southEastIndex % 8) + 1;
-                    if (eastMod > 7) break;
-                    southEastIndex -= 9;
-                }
+                westMod = (southEastIndex % 8) + 1;
+                if (westMod > 7) return new List<Button>();
+                else southEastIndex += 1;
+
+                panel = board.ElementAt(southEastIndex);
             }
+
+            
+            return result;
         }
 
         public static IEnumerable<Button> GetSouthWestPanels(IEnumerable<Button> board, int startIndex, Color enemyColor)
         {
+            Color playerColor = enemyColor == Color.Black ? Color.White : Color.Black;
+
+            List<Button> result = new List<Button>();
+
+            //check South
+            var southWestIndex = startIndex + 8;
+            if (southWestIndex > 63) return result;
+
             //check West
-            var southWestIndex = startIndex;
             var westMod = (southWestIndex % 8) - 1;
-            if (westMod >= 0)
+            if (westMod < 0) return result;
+            else southWestIndex -= 1;
+
+            Button panel = board.ElementAt(southWestIndex);
+            while ((panel.BackColor == enemyColor) && (southWestIndex >= 0))
             {
-                //move west
-                southWestIndex -= 1;
+                result.Add(panel);
 
-                //move south
                 southWestIndex += 8;
-                while (southWestIndex <=63)
-                {
-                    var southWestPanel = board.ElementAt(southWestIndex);
-                    if (southWestPanel.BackColor != enemyColor) break;
-                    yield return southWestPanel;
+                if (southWestIndex > 63) return new List<Button>();
 
-                    westMod = (southWestIndex % 8) - 1;
-                    if (westMod < 0) break;
-                    southWestIndex += 7;
-                }
+                westMod = (southWestIndex % 8) - 1;
+                if (westMod < 0) return new List<Button>();
+                else southWestIndex -= 1;
+
+                panel = board.ElementAt(southWestIndex);
             }
+            
+            return result;
         }
     }
 }

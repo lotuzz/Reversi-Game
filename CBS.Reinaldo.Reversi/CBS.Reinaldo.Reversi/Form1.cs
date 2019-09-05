@@ -90,6 +90,8 @@ namespace CBS.Reinaldo.Reversi
             _EnablePossiblePanel(_CurrentTurn);
 
             _PlayerTurnLabel.Text = _CurrentTurn.PlayerSide.Name;
+
+            if (!_IsPossibleToMove()) _NextTurn();
         }
 
         private void _EnablePossiblePanel(Player player)
@@ -152,6 +154,19 @@ namespace CBS.Reinaldo.Reversi
             };
 
             _CurrentTurn = _BlackPlayer;
+        }
+
+        private bool _IsPossibleToMove()
+        {
+            foreach(var panel in _Board)
+            {
+                if(int.TryParse(panel.Text, out var count) && panel.ForeColor == _CurrentTurn.PlayerSide)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }
