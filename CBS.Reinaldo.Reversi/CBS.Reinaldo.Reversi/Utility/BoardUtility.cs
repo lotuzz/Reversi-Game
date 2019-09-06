@@ -13,245 +13,25 @@ namespace CBS.Reinaldo.Reversi.Utility
             foreach(var btn in board)
             {
                 btn.Enabled = false;
-                btn.Text = "";
+                btn.Text = string.Empty;
             }
         }
 
-        public static void EnableNorth(IEnumerable<Button> board, Player player, int index)
+        public static void EnablePossiblePanel(IEnumerable<Button> board, Player player)
         {
-            var enemyColor = player.PlayerSide == Color.Black ? Color.White : Color.Black;
-            
-            var northPanels = DirectionUtility.GetNorthPanels(board, index, enemyColor);
-            int count = northPanels.Count();
-            if (count == 0) return;
-
-            var lastPanelIndex = int.Parse(northPanels.Last().Name) - 8;
-            if (lastPanelIndex < 0) return;
-
-            var lastPanel = board.ElementAt(lastPanelIndex);
-            if (lastPanel.BackColor != Color.Lime) return;
-
-            lastPanel.Enabled = true;
-            lastPanel.ForeColor = player.PlayerSide;
-            if(string.IsNullOrEmpty(lastPanel.Text))
+            foreach (var panelIndex in player.AcquiredPanels)
             {
-                lastPanel.Text = count.ToString();
-            }
-            else
-            {
-                count = count + int.Parse(lastPanel.Text);
-                lastPanel.Text = count.ToString();
+                _EnableNorth(board, player, panelIndex);
+                _EnableNorthEast(board, player, panelIndex);
+                _EnableEast(board, player, panelIndex);
+                _EnableSouthEast(board, player, panelIndex);
+                _EnableSouth(board, player, panelIndex);
+                _EnableSouthWest(board, player, panelIndex);
+                _EnableWest(board, player, panelIndex);
             }
         }
 
-        public static void EnableSouth(IEnumerable<Button> board, Player player, int index)
-        {
-            var enemyColor = player.PlayerSide == Color.Black ? Color.White : Color.Black;
-
-            var southPanels = DirectionUtility.GetSouthPanels(board, index, enemyColor);
-            int count = southPanels.Count();
-            if (count == 0) return;
-
-            var lastPanelIndex = int.Parse(southPanels.Last().Name) + 8;
-            if (lastPanelIndex > 63) return;
-
-            var lastPanel = board.ElementAt(lastPanelIndex);
-            if (lastPanel.BackColor != Color.Lime) return;
-
-            lastPanel.Enabled = true;
-            lastPanel.ForeColor = player.PlayerSide;
-            if (string.IsNullOrEmpty(lastPanel.Text))
-            {
-                lastPanel.Text = count.ToString();
-            }
-            else
-            {
-                count = count + int.Parse(lastPanel.Text);
-                lastPanel.Text = count.ToString();
-            }
-        }
-
-        public static void EnableEast(IEnumerable<Button> board, Player player, int index)
-        {
-            var enemyColor = player.PlayerSide == Color.Black ? Color.White : Color.Black;
-
-            var eastPanels = DirectionUtility.GetEastPanels(board, index, enemyColor);
-            int count = eastPanels.Count();
-            if (count == 0) return;
-
-            var lastPanelIndex = int.Parse(eastPanels.Last().Name);
-            if ((lastPanelIndex % 8) + 1 > 7) return;
-            else lastPanelIndex += 1;
-
-            var lastPanel = board.ElementAt(lastPanelIndex);
-            if (lastPanel.BackColor != Color.Lime) return;
-
-            lastPanel.Enabled = true;
-            lastPanel.ForeColor = player.PlayerSide;
-            if (string.IsNullOrEmpty(lastPanel.Text))
-            {
-                lastPanel.Text = count.ToString();
-            }
-            else
-            {
-                count = count + int.Parse(lastPanel.Text);
-                lastPanel.Text = count.ToString();
-            }
-        }
-
-        public static void EnableWest(IEnumerable<Button> board, Player player, int index)
-        {
-            var enemyColor = player.PlayerSide == Color.Black ? Color.White : Color.Black;
-
-            var westPanels = DirectionUtility.GetWestPanels(board, index, enemyColor);
-            int count = westPanels.Count();
-            if (count == 0) return;
-
-            var lastPanelIndex = int.Parse(westPanels.Last().Name);
-            if ((lastPanelIndex % 8) - 1 > 7) return;
-            else lastPanelIndex -= 1;
-
-            var lastPanel = board.ElementAt(lastPanelIndex);
-            if (lastPanel.BackColor != Color.Lime) return;
-
-            lastPanel.Enabled = true;
-            lastPanel.ForeColor = player.PlayerSide;
-            if (string.IsNullOrEmpty(lastPanel.Text))
-            {
-                lastPanel.Text = count.ToString();
-            }
-            else
-            {
-                count = count + int.Parse(lastPanel.Text);
-                lastPanel.Text = count.ToString();
-            }
-        }
-
-        public static void EnableNorthEast(IEnumerable<Button> board, Player player, int index)
-        {
-            var enemyColor = player.PlayerSide == Color.Black ? Color.White : Color.Black;
-
-            var northEastPanels = DirectionUtility.GetNorthEastPanels(board, index, enemyColor);
-            int count = northEastPanels.Count();
-            if (count == 0) return;
-
-            var lastPanelIndex = int.Parse(northEastPanels.Last().Name) - 8;
-            if (lastPanelIndex < 0) return;
-
-            var modEast = (lastPanelIndex % 8) + 1;
-            if (modEast > 7) return;
-            else lastPanelIndex += 1;
-
-            var lastPanel = board.ElementAt(lastPanelIndex);
-            if (lastPanel.BackColor != Color.Lime) return;
-
-            lastPanel.Enabled = true;
-            lastPanel.ForeColor = player.PlayerSide;
-            if (string.IsNullOrEmpty(lastPanel.Text))
-            {
-                lastPanel.Text = count.ToString();
-            }
-            else
-            {
-                count = count + int.Parse(lastPanel.Text);
-                lastPanel.Text = count.ToString();
-            }
-        }
-
-        public static void EnableSouthEast(IEnumerable<Button> board, Player player, int index)
-        {
-            var enemyColor = player.PlayerSide == Color.Black ? Color.White : Color.Black;
-
-            var southEastPanels = DirectionUtility.GetSouthEastPanels(board, index, enemyColor);
-            int count = southEastPanels.Count();
-            if (count == 0) return;
-
-            var lastPanelIndex = int.Parse(southEastPanels.Last().Name) + 8;
-            if (lastPanelIndex > 63) return;
-
-            var modEast = (lastPanelIndex % 8) + 1;
-            if (modEast > 7) return;
-            else lastPanelIndex += 1;
-
-            var lastPanel = board.ElementAt(lastPanelIndex);
-            if (lastPanel.BackColor != Color.Lime) return;
-
-            lastPanel.Enabled = true;
-            lastPanel.ForeColor = player.PlayerSide;
-            if (string.IsNullOrEmpty(lastPanel.Text))
-            {
-                lastPanel.Text = count.ToString();
-            }
-            else
-            {
-                count = count + int.Parse(lastPanel.Text);
-                lastPanel.Text = count.ToString();
-            }
-        }
-
-        public static void EnableSouthWest(IEnumerable<Button> board, Player player, int index)
-        {
-            var enemyColor = player.PlayerSide == Color.Black ? Color.White : Color.Black;
-
-            var southWestPanels = DirectionUtility.GetSouthWestPanels(board, index, enemyColor);
-            int count = southWestPanels.Count();
-            if (count == 0) return;
-
-            var lastPanelIndex = int.Parse(southWestPanels.Last().Name) + 8;
-            if (lastPanelIndex > 63) return;
-
-            var modWest = (lastPanelIndex % 8) - 1;
-            if (modWest < 0) return;
-            else lastPanelIndex -= 1;
-
-            var lastPanel = board.ElementAt(lastPanelIndex);
-            if (lastPanel.BackColor != Color.Lime) return;
-
-            lastPanel.Enabled = true;
-            lastPanel.ForeColor = player.PlayerSide;
-            if (string.IsNullOrEmpty(lastPanel.Text))
-            {
-                lastPanel.Text = count.ToString();
-            }
-            else
-            {
-                count = count + int.Parse(lastPanel.Text);
-                lastPanel.Text = count.ToString();
-            }
-        }
-
-        public static void EnableNorthWest(IEnumerable<Button> board, Player player, int index)
-        {
-            var enemyColor = player.PlayerSide == Color.Black ? Color.White : Color.Black;
-
-            var northWestPanels = DirectionUtility.GetNorthWestPanels(board, index, enemyColor);
-            int count = northWestPanels.Count();
-            if (count == 0) return;
-
-            var lastPanelIndex = int.Parse(northWestPanels.Last().Name) - 8;
-            if (lastPanelIndex < 0) return;
-
-            var modWest = (lastPanelIndex % 8) - 1;
-            if (modWest < 0) return;
-            else lastPanelIndex -= 1;
-
-            var lastPanel = board.ElementAt(lastPanelIndex);
-            if (lastPanel.BackColor != Color.Lime) return;
-
-            lastPanel.Enabled = true;
-            lastPanel.ForeColor = player.PlayerSide;
-            if (string.IsNullOrEmpty(lastPanel.Text))
-            {
-                lastPanel.Text = count.ToString();
-            }
-            else
-            {
-                count = count + int.Parse(lastPanel.Text);
-                lastPanel.Text = count.ToString();
-            }
-        }
-
-        public static void TryAcquiringPanels(IEnumerable<Button> board, Player player, Player enemy, int index)
+        public static void TryFlipEnemyDisks(IEnumerable<Button> board, Player player, Player enemy, int index)
         {
             var enemyColor = enemy.PlayerSide;
             bool isValid;
@@ -352,5 +132,258 @@ namespace CBS.Reinaldo.Reversi.Utility
                 }
             }
         }
+
+        public static void InitializeDisks(IEnumerable<Button> board, Player whitePlayer, Player blackPlayer)
+        {
+            Button panel;
+
+            //28 35 White
+            panel = board.Single(b => b.Name == 28.ToString());
+            GamePlayUtility.MakeMove(whitePlayer, panel);
+            panel = board.Single(b => b.Name == 35.ToString());
+            GamePlayUtility.MakeMove(whitePlayer, panel);
+
+            //27 36 Black
+            panel = board.Single(b => b.Name == 27.ToString());
+            GamePlayUtility.MakeMove(blackPlayer, panel);
+            panel = board.Single(b => b.Name == 36.ToString());
+            GamePlayUtility.MakeMove(blackPlayer, panel);
+        }
+
+        #region Private Method(s)
+        private static void _EnableNorth(IEnumerable<Button> board, Player player, int index)
+        {
+            var enemyColor = player.PlayerSide == Color.Black ? Color.White : Color.Black;
+
+            var northPanels = DirectionUtility.GetNorthPanels(board, index, enemyColor);
+            int count = northPanels.Count();
+            if (count == 0) return;
+
+            var lastPanelIndex = int.Parse(northPanels.Last().Name) - 8;
+            if (lastPanelIndex < 0) return;
+
+            var lastPanel = board.ElementAt(lastPanelIndex);
+            if (lastPanel.BackColor != Color.Lime) return;
+
+            lastPanel.Enabled = true;
+            lastPanel.ForeColor = player.PlayerSide;
+            if (string.IsNullOrEmpty(lastPanel.Text))
+            {
+                lastPanel.Text = count.ToString();
+            }
+            else
+            {
+                count = count + int.Parse(lastPanel.Text);
+                lastPanel.Text = count.ToString();
+            }
+        }
+
+        private static void _EnableSouth(IEnumerable<Button> board, Player player, int index)
+        {
+            var enemyColor = player.PlayerSide == Color.Black ? Color.White : Color.Black;
+
+            var southPanels = DirectionUtility.GetSouthPanels(board, index, enemyColor);
+            int count = southPanels.Count();
+            if (count == 0) return;
+
+            var lastPanelIndex = int.Parse(southPanels.Last().Name) + 8;
+            if (lastPanelIndex > 63) return;
+
+            var lastPanel = board.ElementAt(lastPanelIndex);
+            if (lastPanel.BackColor != Color.Lime) return;
+
+            lastPanel.Enabled = true;
+            lastPanel.ForeColor = player.PlayerSide;
+            if (string.IsNullOrEmpty(lastPanel.Text))
+            {
+                lastPanel.Text = count.ToString();
+            }
+            else
+            {
+                count = count + int.Parse(lastPanel.Text);
+                lastPanel.Text = count.ToString();
+            }
+        }
+
+        private static void _EnableEast(IEnumerable<Button> board, Player player, int index)
+        {
+            var enemyColor = player.PlayerSide == Color.Black ? Color.White : Color.Black;
+
+            var eastPanels = DirectionUtility.GetEastPanels(board, index, enemyColor);
+            int count = eastPanels.Count();
+            if (count == 0) return;
+
+            var lastPanelIndex = int.Parse(eastPanels.Last().Name);
+            if ((lastPanelIndex % 8) + 1 > 7) return;
+            else lastPanelIndex += 1;
+
+            var lastPanel = board.ElementAt(lastPanelIndex);
+            if (lastPanel.BackColor != Color.Lime) return;
+
+            lastPanel.Enabled = true;
+            lastPanel.ForeColor = player.PlayerSide;
+            if (string.IsNullOrEmpty(lastPanel.Text))
+            {
+                lastPanel.Text = count.ToString();
+            }
+            else
+            {
+                count = count + int.Parse(lastPanel.Text);
+                lastPanel.Text = count.ToString();
+            }
+        }
+
+        private static void _EnableWest(IEnumerable<Button> board, Player player, int index)
+        {
+            var enemyColor = player.PlayerSide == Color.Black ? Color.White : Color.Black;
+
+            var westPanels = DirectionUtility.GetWestPanels(board, index, enemyColor);
+            int count = westPanels.Count();
+            if (count == 0) return;
+
+            var lastPanelIndex = int.Parse(westPanels.Last().Name);
+            if ((lastPanelIndex % 8) - 1 > 7) return;
+            else lastPanelIndex -= 1;
+
+            var lastPanel = board.ElementAt(lastPanelIndex);
+            if (lastPanel.BackColor != Color.Lime) return;
+
+            lastPanel.Enabled = true;
+            lastPanel.ForeColor = player.PlayerSide;
+            if (string.IsNullOrEmpty(lastPanel.Text))
+            {
+                lastPanel.Text = count.ToString();
+            }
+            else
+            {
+                count = count + int.Parse(lastPanel.Text);
+                lastPanel.Text = count.ToString();
+            }
+        }
+
+        private static void _EnableNorthEast(IEnumerable<Button> board, Player player, int index)
+        {
+            var enemyColor = player.PlayerSide == Color.Black ? Color.White : Color.Black;
+
+            var northEastPanels = DirectionUtility.GetNorthEastPanels(board, index, enemyColor);
+            int count = northEastPanels.Count();
+            if (count == 0) return;
+
+            var lastPanelIndex = int.Parse(northEastPanels.Last().Name) - 8;
+            if (lastPanelIndex < 0) return;
+
+            var modEast = (lastPanelIndex % 8) + 1;
+            if (modEast > 7) return;
+            else lastPanelIndex += 1;
+
+            var lastPanel = board.ElementAt(lastPanelIndex);
+            if (lastPanel.BackColor != Color.Lime) return;
+
+            lastPanel.Enabled = true;
+            lastPanel.ForeColor = player.PlayerSide;
+            if (string.IsNullOrEmpty(lastPanel.Text))
+            {
+                lastPanel.Text = count.ToString();
+            }
+            else
+            {
+                count = count + int.Parse(lastPanel.Text);
+                lastPanel.Text = count.ToString();
+            }
+        }
+
+        private static void _EnableSouthEast(IEnumerable<Button> board, Player player, int index)
+        {
+            var enemyColor = player.PlayerSide == Color.Black ? Color.White : Color.Black;
+
+            var southEastPanels = DirectionUtility.GetSouthEastPanels(board, index, enemyColor);
+            int count = southEastPanels.Count();
+            if (count == 0) return;
+
+            var lastPanelIndex = int.Parse(southEastPanels.Last().Name) + 8;
+            if (lastPanelIndex > 63) return;
+
+            var modEast = (lastPanelIndex % 8) + 1;
+            if (modEast > 7) return;
+            else lastPanelIndex += 1;
+
+            var lastPanel = board.ElementAt(lastPanelIndex);
+            if (lastPanel.BackColor != Color.Lime) return;
+
+            lastPanel.Enabled = true;
+            lastPanel.ForeColor = player.PlayerSide;
+            if (string.IsNullOrEmpty(lastPanel.Text))
+            {
+                lastPanel.Text = count.ToString();
+            }
+            else
+            {
+                count = count + int.Parse(lastPanel.Text);
+                lastPanel.Text = count.ToString();
+            }
+        }
+
+        private static void _EnableSouthWest(IEnumerable<Button> board, Player player, int index)
+        {
+            var enemyColor = player.PlayerSide == Color.Black ? Color.White : Color.Black;
+
+            var southWestPanels = DirectionUtility.GetSouthWestPanels(board, index, enemyColor);
+            int count = southWestPanels.Count();
+            if (count == 0) return;
+
+            var lastPanelIndex = int.Parse(southWestPanels.Last().Name) + 8;
+            if (lastPanelIndex > 63) return;
+
+            var modWest = (lastPanelIndex % 8) - 1;
+            if (modWest < 0) return;
+            else lastPanelIndex -= 1;
+
+            var lastPanel = board.ElementAt(lastPanelIndex);
+            if (lastPanel.BackColor != Color.Lime) return;
+
+            lastPanel.Enabled = true;
+            lastPanel.ForeColor = player.PlayerSide;
+            if (string.IsNullOrEmpty(lastPanel.Text))
+            {
+                lastPanel.Text = count.ToString();
+            }
+            else
+            {
+                count = count + int.Parse(lastPanel.Text);
+                lastPanel.Text = count.ToString();
+            }
+        }
+
+        private static void _EnableNorthWest(IEnumerable<Button> board, Player player, int index)
+        {
+            var enemyColor = player.PlayerSide == Color.Black ? Color.White : Color.Black;
+
+            var northWestPanels = DirectionUtility.GetNorthWestPanels(board, index, enemyColor);
+            int count = northWestPanels.Count();
+            if (count == 0) return;
+
+            var lastPanelIndex = int.Parse(northWestPanels.Last().Name) - 8;
+            if (lastPanelIndex < 0) return;
+
+            var modWest = (lastPanelIndex % 8) - 1;
+            if (modWest < 0) return;
+            else lastPanelIndex -= 1;
+
+            var lastPanel = board.ElementAt(lastPanelIndex);
+            if (lastPanel.BackColor != Color.Lime) return;
+
+            lastPanel.Enabled = true;
+            lastPanel.ForeColor = player.PlayerSide;
+            if (string.IsNullOrEmpty(lastPanel.Text))
+            {
+                lastPanel.Text = count.ToString();
+            }
+            else
+            {
+                count = count + int.Parse(lastPanel.Text);
+                lastPanel.Text = count.ToString();
+            }
+        }
+        #endregion
     }
 }
