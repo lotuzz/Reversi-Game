@@ -32,6 +32,13 @@ namespace CBS.Reinaldo.Reversi
             _InitializeBoard();
         }
 
+        private void _RestartGame()
+        {
+            Controls.Clear();
+            InitializeComponent();
+            _StartGame(this, null);
+        }
+
         //Event Handler
         private void _GetMove(object sender, EventArgs e)
         {
@@ -62,7 +69,8 @@ namespace CBS.Reinaldo.Reversi
                     var winner = whiteScore > blackScore ? _WhitePlayer : _BlackPlayer;
 
                     MessageBox.Show($"White Score = {whiteScore} {Environment.NewLine} Black Score = {blackScore} ", $"[GAME OVER] {winner.PlayerSide.Name} Player Win");
-                    InitializeComponent();
+
+                    _RestartGame();
                     return;
                 }
                 MessageBox.Show($"[{_CurrentTurn.PlayerSide.Name}] Player can't move. [{_Enemy().PlayerSide.Name}] Turn", "Game Notification");
