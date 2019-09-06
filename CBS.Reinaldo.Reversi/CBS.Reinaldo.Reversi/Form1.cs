@@ -16,7 +16,6 @@ namespace CBS.Reinaldo.Reversi
         private Player _BlackPlayer;
         private Player _WhitePlayer;
         private Player _CurrentTurn;
-        private Label _PlayerTurnLabel;
 
         private IEnumerable<Button> _Board;
 
@@ -27,9 +26,9 @@ namespace CBS.Reinaldo.Reversi
 
         private void _StartGame(object sender, EventArgs e)
         {
-            _PlayerTurnLabel = Controls.Find("playerlabel", false).First() as Label;
             _InitializePlayers();
             _InitializeBoard();
+            _DisplayScore();
         }
 
         private void _RestartGame()
@@ -49,7 +48,10 @@ namespace CBS.Reinaldo.Reversi
 
             //Try Flip Enemy Disks
             BoardUtility.TryFlipEnemyDisks(_Board, _CurrentTurn, _Enemy(), _Index(btn));
-            
+
+            //Update Score Display
+            _DisplayScore();
+
             //Set Next Turn
             _NextTurn();
         }
@@ -143,6 +145,12 @@ namespace CBS.Reinaldo.Reversi
         private int _Index(Button panel)
         {
             return int.Parse(panel.Name);
+        }
+
+        private void _DisplayScore()
+        {
+            _WhitePlayerScoreLabel.Text = _WhitePlayer.AcquiredPanels.Count.ToString();
+            _BlackPlayerScoreLabel.Text = _BlackPlayer.AcquiredPanels.Count.ToString();
         }
     }
 }
