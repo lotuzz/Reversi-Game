@@ -1,2 +1,2 @@
-- Make EndGame play condition
-- Scoring
+- Write Document
+- Create ReadMe file
