@@ -27,13 +27,80 @@ namespace CBS.Reinaldo.Reversi
 
         private void _StartGame(object sender, EventArgs e)
         {
+            _PlayerTurnLabel = Controls.Find("playerlabel", false).First() as Label;
             _InitializePlayers();
             _InitializeBoard();
-            
-            _PlayerTurnLabel = Controls.Find("playerlabel", false).First() as Label;
-            _PlayerTurnLabel.Text = _CurrentTurn.PlayerSide.Name;
+        }
 
-            _EnablePossiblePanel(_CurrentTurn);
+        //Event Handler
+        private void _GetMove(object sender, EventArgs e)
+        {
+            Button btn = (Button)sender;
+
+            //MakeMove
+            GamePlayUtility.MakeMove(_CurrentTurn, btn);
+
+            //Try Flip Enemy Disks
+            BoardUtility.TryFlipEnemyDisks(_Board, _CurrentTurn, _Enemy(), _Index(btn));
+            
+            //Set Next Turn
+            _NextTurn();
+        }
+
+        private void _NextTurn()
+        {
+            _CurrentTurn = _Enemy();
+            _PlayerTurnLabel.Text = _CurrentTurn.PlayerSide.Name;
+            
+            if (!GamePlayUtility.IsPossibleToMove(_Board, _CurrentTurn))
+            {
+                if (!GamePlayUtility.IsPossibleToMove(_Board, _Enemy()))
+                {
+                    //Game Over
+                    var whiteScore = _WhitePlayer.AcquiredPanels.Count;
+                    var blackScore = _BlackPlayer.AcquiredPanels.Count;
+                    var winner = whiteScore > blackScore ? _WhitePlayer : _BlackPlayer;
+
+                    MessageBox.Show($"White Score = {whiteScore} {Environment.NewLine} Black Score = {blackScore} ", $"[GAME OVER] {winner.PlayerSide.Name} Player Win");
+                    InitializeComponent();
+                    return;
+                }
+                MessageBox.Show($"[{_CurrentTurn.PlayerSide.Name}] Player can't move. [{_Enemy().PlayerSide.Name}] Turn", "Game Notification");
+
+                _NextTurn();
+            }
+        }
+
+        #region Called Once
+        private void _InitializeBoard()
+        {
+            //Generate 8x8 Panel
+            for (int i = 0; i <= 63; i++)
+            {
+                Controls.Add(_CreatePanel(i));
+            }
+            _Board = Controls.OfType<Button>();
+
+            //Initialize Disks
+            BoardUtility.InitializeDisks(_Board, _WhitePlayer, _BlackPlayer);
+
+            //Enable Panels
+            BoardUtility.EnablePossiblePanel(_Board, _CurrentTurn);
+        }
+        
+        private void _InitializePlayers()
+        {
+            _BlackPlayer = new Player
+            {
+                PlayerSide = Color.Black
+            };
+            _WhitePlayer = new Player
+            {
+                PlayerSide = Color.White
+            };
+
+            _CurrentTurn = _BlackPlayer;
+            _PlayerTurnLabel.Text = _CurrentTurn.PlayerSide.Name;
         }
 
         private Button _CreatePanel(int index)
@@ -58,115 +125,16 @@ namespace CBS.Reinaldo.Reversi
             btn.Click += new EventHandler(_GetMove);
             return btn;
         }
+        #endregion
 
-        private void _GetMove(object sender, EventArgs e)
+        private Player _Enemy()
         {
-            Button btn = (Button)sender;
-
-            //MakeMove
-            _MakeMove(btn);
-
-            //Acquire Panels
-            var enemy = _CurrentTurn.PlayerSide == Color.Black ? _WhitePlayer : _BlackPlayer;
-            BoardUtility.TryAcquiringPanels(_Board, _CurrentTurn, enemy, int.Parse(btn.Name));
-
-            _NextTurn();
+            return _CurrentTurn.PlayerSide == Color.Black ? _WhitePlayer : _BlackPlayer;
         }
 
-        private void _MakeMove(Control btn)
+        private int _Index(Button panel)
         {
-            var index = _Board.ToList().FindIndex(item => item.Name == btn.Name);
-            _Board.ElementAt(index).BackColor = _CurrentTurn.PlayerSide == Color.Black ? Color.Black : Color.White;
-            
-            _CurrentTurn.AcquirePanel((Button)btn);
-        }
-
-        private void _NextTurn()
-        {
-            BoardUtility.ResetPanelAccessAndText(_Board);
-            
-            _CurrentTurn = _CurrentTurn.PlayerSide == Color.Black ? _WhitePlayer : _BlackPlayer;
-
-            _EnablePossiblePanel(_CurrentTurn);
-
-            _PlayerTurnLabel.Text = _CurrentTurn.PlayerSide.Name;
-
-            if (!_IsPossibleToMove()) _NextTurn();
-        }
-
-        private void _EnablePossiblePanel(Player player)
-        {
-            foreach(var panelIndex in player.AcquiredPanels)
-            {
-                BoardUtility.EnableNorth(_Board, player, panelIndex);
-                BoardUtility.EnableNorthEast(_Board, player, panelIndex);
-                BoardUtility.EnableEast(_Board, player, panelIndex);
-                BoardUtility.EnableSouthEast(_Board, player, panelIndex);
-                BoardUtility.EnableSouth(_Board, player, panelIndex);
-                BoardUtility.EnableSouthWest(_Board, player, panelIndex);
-                BoardUtility.EnableWest(_Board, player, panelIndex);
-            }
-        }
-        
-        private void _InitializeBoard()
-        {
-            //Generate 8x8 Panel
-            for (int i = 0; i <= 63; i++)
-            {
-                Controls.Add(_CreatePanel(i));
-            }
-            _Board = Controls.OfType<Button>();
-
-            //Initialize Disks
-            _InitializeDisks();
-        }
-
-        private void _InitializeDisks()
-        {
-            Button panel;
-            
-            //28 35 White
-            _CurrentTurn = _WhitePlayer;
-            panel = _Board.Single(b => b.Name == 28.ToString());
-            _MakeMove(panel);
-            panel = _Board.Single(b => b.Name == 35.ToString());
-            _MakeMove(panel);
-
-            //27 36 Black
-            _CurrentTurn = _BlackPlayer;
-            panel = _Board.Single(b => b.Name == 27.ToString());
-            _MakeMove(panel);
-            panel.BackColor = Color.Black;
-            panel = _Board.Single(b => b.Name == 36.ToString());
-            _MakeMove(panel);
-        }
-
-        private void _InitializePlayers()
-        {
-            _BlackPlayer = new Player
-            {
-                PlayerSide = Color.Black
-            };
-
-            _WhitePlayer = new Player
-            {
-                PlayerSide = Color.White
-            };
-
-            _CurrentTurn = _BlackPlayer;
-        }
-
-        private bool _IsPossibleToMove()
-        {
-            foreach(var panel in _Board)
-            {
-                if(int.TryParse(panel.Text, out var count) && panel.ForeColor == _CurrentTurn.PlayerSide)
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return int.Parse(panel.Name);
         }
     }
 }
