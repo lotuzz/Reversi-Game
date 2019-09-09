@@ -26,8 +26,12 @@ namespace CBS.Reinaldo.Reversi
 
         private void _StartGame(object sender, EventArgs e)
         {
+            _CreateBoard();
             _InitializePlayers();
-            _InitializeBoard();
+
+            //Enable Panels
+            BoardUtility.EnablePossiblePanel(_Board, _CurrentTurn);
+
             _DisplayScore();
         }
 
@@ -82,7 +86,7 @@ namespace CBS.Reinaldo.Reversi
         }
 
         #region Called Once
-        private void _InitializeBoard()
+        private void _CreateBoard()
         {
             //Generate 8x8 Panel
             for (int i = 0; i <= 63; i++)
@@ -90,12 +94,6 @@ namespace CBS.Reinaldo.Reversi
                 Controls.Add(_CreatePanel(i));
             }
             _Board = Controls.OfType<Button>();
-
-            //Initialize Disks
-            BoardUtility.InitializeDisks(_Board, _WhitePlayer, _BlackPlayer);
-
-            //Enable Panels
-            BoardUtility.EnablePossiblePanel(_Board, _CurrentTurn);
         }
         
         private void _InitializePlayers()
@@ -111,6 +109,9 @@ namespace CBS.Reinaldo.Reversi
 
             _CurrentTurn = _BlackPlayer;
             _PlayerTurnLabel.Text = _CurrentTurn.PlayerSide.Name;
+            
+            //Initialize Disks
+            BoardUtility.InitializeDisks(_Board, _WhitePlayer, _BlackPlayer);
         }
 
         private Button _CreatePanel(int index)
