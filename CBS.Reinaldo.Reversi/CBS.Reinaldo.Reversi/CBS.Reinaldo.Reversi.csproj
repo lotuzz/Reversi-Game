@@ -61,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entity\GreedyAI.cs" />
     <Compile Include="Entity\Player.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
