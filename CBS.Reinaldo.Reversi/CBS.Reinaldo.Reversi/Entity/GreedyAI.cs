@@ -34,8 +34,12 @@ namespace CBS.Reinaldo.Reversi.Entity
                 if (panelCount >= maxPanelCount) maxPanel = panel;
             }
 
-            await Task.Delay(2000);
-            if (maxPanel != null) maxPanel.PerformClick();
+            //await Task.Delay(2000);
+            if (maxPanel != null)
+            {
+                maxPanel.Enabled = true;
+                maxPanel.PerformClick();
+            }
             return;
         }
     }
