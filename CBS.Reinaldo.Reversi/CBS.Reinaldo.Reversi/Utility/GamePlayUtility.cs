@@ -16,16 +16,17 @@ namespace CBS.Reinaldo.Reversi.Utility
 
         public static bool IsPossibleToMove(IEnumerable<Button> board, Player currentTurn)
         {
-            BoardUtility.ResetPanelAccessAndText(board);
             BoardUtility.EnablePossiblePanel(board, currentTurn);
             foreach (var panel in board)
             {
                 if (int.TryParse(panel.Text, out var count) && panel.ForeColor == currentTurn.PlayerSide)
                 {
+                    BoardUtility.ResetPanelAccessAndText(board);
                     return true;
                 }
             }
-            
+
+            BoardUtility.ResetPanelAccessAndText(board);
             return false;
         }
     }

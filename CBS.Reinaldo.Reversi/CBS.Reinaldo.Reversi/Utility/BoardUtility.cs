@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Linq;
 using System.Drawing;
+using System.Threading.Tasks;
 
 namespace CBS.Reinaldo.Reversi.Utility
 {
@@ -17,27 +18,29 @@ namespace CBS.Reinaldo.Reversi.Utility
             }
         }
 
-        public static void EnablePossiblePanel(IEnumerable<Button> board, Player player)
+        public static async void EnablePossiblePanel(IEnumerable<Button> board, Player player)
         {
             foreach (var panelIndex in player.AcquiredPanels)
             {
-                _EnableNorth(board, player, panelIndex);
-                _EnableNorthEast(board, player, panelIndex);
-                _EnableEast(board, player, panelIndex);
-                _EnableSouthEast(board, player, panelIndex);
-                _EnableSouth(board, player, panelIndex);
-                _EnableSouthWest(board, player, panelIndex);
-                _EnableWest(board, player, panelIndex);
+                await _EnableNorth(board, player, panelIndex);
+                await _EnableNorthEast(board, player, panelIndex);
+                await _EnableEast(board, player, panelIndex);
+                await _EnableSouthEast(board, player, panelIndex);
+                await _EnableSouth(board, player, panelIndex);
+                await _EnableSouthWest(board, player, panelIndex);
+                await _EnableWest(board, player, panelIndex);
             }
         }
 
-        public static void TryFlipEnemyDisks(IEnumerable<Button> board, Player player, Player enemy, int index)
+        public static async void TryFlipEnemyDisks(IEnumerable<Button> board, Player player, Player enemy, int index)
         {
+            ResetPanelAccessAndText(board);
+
             var enemyColor = enemy.PlayerSide;
             bool isValid;
 
             //north
-            var northPanels = DirectionUtility.GetNorthPanels(board, index, enemyColor);
+            var northPanels = await DirectionUtility.GetNorthPanels(board, index, enemyColor);
             if (northPanels.Count() == 0) isValid = false;
             else isValid = board.ElementAt(int.Parse(northPanels.Last().Name) -8).BackColor == player.PlayerSide;
             if(isValid)
@@ -49,7 +52,7 @@ namespace CBS.Reinaldo.Reversi.Utility
             }
 
             //east
-            var eastPanels = DirectionUtility.GetEastPanels(board, index, enemyColor);
+            var eastPanels = await DirectionUtility.GetEastPanels(board, index, enemyColor);
             if (eastPanels.Count() == 0) isValid = false;
             else isValid = board.ElementAt(int.Parse(eastPanels.Last().Name) + 1).BackColor == player.PlayerSide;
             if (isValid)
@@ -61,7 +64,7 @@ namespace CBS.Reinaldo.Reversi.Utility
             }
 
             //south
-            var southPanels = DirectionUtility.GetSouthPanels(board, index, enemyColor);
+            var southPanels = await DirectionUtility.GetSouthPanels(board, index, enemyColor);
             if (southPanels.Count() == 0) isValid = false;
             else isValid = board.ElementAt(int.Parse(southPanels.Last().Name) + 8).BackColor == player.PlayerSide;
             if (isValid)
@@ -73,7 +76,7 @@ namespace CBS.Reinaldo.Reversi.Utility
             }
 
             //west
-            var westPanels = DirectionUtility.GetWestPanels(board, index, enemyColor);
+            var westPanels = await DirectionUtility.GetWestPanels(board, index, enemyColor);
             if (westPanels.Count() == 0) isValid = false;
             else isValid = board.ElementAt(int.Parse(westPanels.Last().Name) - 1).BackColor == player.PlayerSide;
             if (isValid)
@@ -85,7 +88,7 @@ namespace CBS.Reinaldo.Reversi.Utility
             }
 
             //north east
-            var northEasPanels = DirectionUtility.GetNorthEastPanels(board, index, enemyColor);
+            var northEasPanels = await DirectionUtility.GetNorthEastPanels(board, index, enemyColor);
             if (northEasPanels.Count() == 0) isValid = false;
             else isValid = board.ElementAt(int.Parse(northEasPanels.Last().Name) + 1 - 8).BackColor == player.PlayerSide;
             if (isValid)
@@ -97,7 +100,7 @@ namespace CBS.Reinaldo.Reversi.Utility
             }
 
             //south east
-            var southEastPanels = DirectionUtility.GetSouthEastPanels(board, index, enemyColor);
+            var southEastPanels = await DirectionUtility.GetSouthEastPanels(board, index, enemyColor);
             if (southEastPanels.Count() == 0) isValid = false;
             else isValid = board.ElementAt(int.Parse(southEastPanels.Last().Name) + 1 + 8).BackColor == player.PlayerSide;
             if (isValid)
@@ -109,7 +112,7 @@ namespace CBS.Reinaldo.Reversi.Utility
             }
 
             //south west
-            var southWestPanels = DirectionUtility.GetSouthWestPanels(board, index, enemyColor);
+            var southWestPanels = await DirectionUtility.GetSouthWestPanels(board, index, enemyColor);
             if (southWestPanels.Count() == 0) isValid = false;
             else isValid = board.ElementAt(int.Parse(southWestPanels.Last().Name) - 1 + 8).BackColor == player.PlayerSide;
             if (isValid)
@@ -121,7 +124,7 @@ namespace CBS.Reinaldo.Reversi.Utility
             }
 
             //north west
-            var northWestPanels = DirectionUtility.GetNorthWestPanels(board, index, enemyColor);
+            var northWestPanels = await DirectionUtility.GetNorthWestPanels(board, index, enemyColor);
             if (northWestPanels.Count() == 0) isValid = false;
             else isValid = board.ElementAt(int.Parse(northWestPanels.Last().Name) - 1 - 8).BackColor == player.PlayerSide;
             if (isValid)
@@ -151,11 +154,11 @@ namespace CBS.Reinaldo.Reversi.Utility
         }
 
         #region Private Method(s)
-        private static void _EnableNorth(IEnumerable<Button> board, Player player, int index)
+        private static async Task _EnableNorth(IEnumerable<Button> board, Player player, int index)
         {
             var enemyColor = player.PlayerSide == Color.Black ? Color.White : Color.Black;
 
-            var northPanels = DirectionUtility.GetNorthPanels(board, index, enemyColor);
+            var northPanels = await DirectionUtility.GetNorthPanels(board, index, enemyColor);
             int count = northPanels.Count();
             if (count == 0) return;
 
@@ -178,11 +181,11 @@ namespace CBS.Reinaldo.Reversi.Utility
             }
         }
 
-        private static void _EnableSouth(IEnumerable<Button> board, Player player, int index)
+        private static async Task _EnableSouth(IEnumerable<Button> board, Player player, int index)
         {
             var enemyColor = player.PlayerSide == Color.Black ? Color.White : Color.Black;
 
-            var southPanels = DirectionUtility.GetSouthPanels(board, index, enemyColor);
+            var southPanels = await DirectionUtility.GetSouthPanels(board, index, enemyColor);
             int count = southPanels.Count();
             if (count == 0) return;
 
@@ -205,11 +208,11 @@ namespace CBS.Reinaldo.Reversi.Utility
             }
         }
 
-        private static void _EnableEast(IEnumerable<Button> board, Player player, int index)
+        private static async Task _EnableEast(IEnumerable<Button> board, Player player, int index)
         {
             var enemyColor = player.PlayerSide == Color.Black ? Color.White : Color.Black;
 
-            var eastPanels = DirectionUtility.GetEastPanels(board, index, enemyColor);
+            var eastPanels = await DirectionUtility.GetEastPanels(board, index, enemyColor);
             int count = eastPanels.Count();
             if (count == 0) return;
 
@@ -233,11 +236,11 @@ namespace CBS.Reinaldo.Reversi.Utility
             }
         }
 
-        private static void _EnableWest(IEnumerable<Button> board, Player player, int index)
+        private static async Task _EnableWest(IEnumerable<Button> board, Player player, int index)
         {
             var enemyColor = player.PlayerSide == Color.Black ? Color.White : Color.Black;
 
-            var westPanels = DirectionUtility.GetWestPanels(board, index, enemyColor);
+            var westPanels = await DirectionUtility.GetWestPanels(board, index, enemyColor);
             int count = westPanels.Count();
             if (count == 0) return;
 
@@ -261,11 +264,11 @@ namespace CBS.Reinaldo.Reversi.Utility
             }
         }
 
-        private static void _EnableNorthEast(IEnumerable<Button> board, Player player, int index)
+        private static async Task _EnableNorthEast(IEnumerable<Button> board, Player player, int index)
         {
             var enemyColor = player.PlayerSide == Color.Black ? Color.White : Color.Black;
 
-            var northEastPanels = DirectionUtility.GetNorthEastPanels(board, index, enemyColor);
+            var northEastPanels = await DirectionUtility.GetNorthEastPanels(board, index, enemyColor);
             int count = northEastPanels.Count();
             if (count == 0) return;
 
@@ -292,11 +295,11 @@ namespace CBS.Reinaldo.Reversi.Utility
             }
         }
 
-        private static void _EnableSouthEast(IEnumerable<Button> board, Player player, int index)
+        private static async Task _EnableSouthEast(IEnumerable<Button> board, Player player, int index)
         {
             var enemyColor = player.PlayerSide == Color.Black ? Color.White : Color.Black;
 
-            var southEastPanels = DirectionUtility.GetSouthEastPanels(board, index, enemyColor);
+            var southEastPanels = await DirectionUtility.GetSouthEastPanels(board, index, enemyColor);
             int count = southEastPanels.Count();
             if (count == 0) return;
 
@@ -323,11 +326,11 @@ namespace CBS.Reinaldo.Reversi.Utility
             }
         }
 
-        private static void _EnableSouthWest(IEnumerable<Button> board, Player player, int index)
+        private static async Task _EnableSouthWest(IEnumerable<Button> board, Player player, int index)
         {
             var enemyColor = player.PlayerSide == Color.Black ? Color.White : Color.Black;
 
-            var southWestPanels = DirectionUtility.GetSouthWestPanels(board, index, enemyColor);
+            var southWestPanels = await DirectionUtility.GetSouthWestPanels(board, index, enemyColor);
             int count = southWestPanels.Count();
             if (count == 0) return;
 
@@ -354,11 +357,11 @@ namespace CBS.Reinaldo.Reversi.Utility
             }
         }
 
-        private static void _EnableNorthWest(IEnumerable<Button> board, Player player, int index)
+        private static async Task _EnableNorthWest(IEnumerable<Button> board, Player player, int index)
         {
             var enemyColor = player.PlayerSide == Color.Black ? Color.White : Color.Black;
 
-            var northWestPanels = DirectionUtility.GetNorthWestPanels(board, index, enemyColor);
+            var northWestPanels = await DirectionUtility.GetNorthWestPanels(board, index, enemyColor);
             int count = northWestPanels.Count();
             if (count == 0) return;
 

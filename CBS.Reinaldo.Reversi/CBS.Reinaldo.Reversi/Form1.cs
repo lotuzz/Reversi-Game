@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace CBS.Reinaldo.Reversi
@@ -57,6 +58,7 @@ namespace CBS.Reinaldo.Reversi
             _DisplayScore();
 
             //Set Next Turn
+            MessageBox.Show("Waow");
             _NextTurn();
         }
 
@@ -83,6 +85,8 @@ namespace CBS.Reinaldo.Reversi
 
                 _NextTurn();
             }
+
+            if (_CurrentTurn is GreedyAI player) player.AutoMove(_Board);
         }
 
         #region Called Once
@@ -102,7 +106,7 @@ namespace CBS.Reinaldo.Reversi
             {
                 PlayerSide = Color.Black
             };
-            _WhitePlayer = new Player
+            _WhitePlayer = new GreedyAI
             {
                 PlayerSide = Color.White
             };
