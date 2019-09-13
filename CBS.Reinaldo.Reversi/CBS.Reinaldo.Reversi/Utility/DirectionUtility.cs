@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CBS.Reinaldo.Reversi.Utility
 {
     public static class DirectionUtility
     {
-        public static IEnumerable<Button> GetNorthPanels(IEnumerable<Button> board, int startIndex, Color enemyColor)
+        public static async Task<IEnumerable<Button>> GetNorthPanels(IEnumerable<Button> board, int startIndex, Color enemyColor)
         {
             Color playerColor = enemyColor == Color.Black ? Color.White : Color.Black;
 
@@ -28,7 +29,7 @@ namespace CBS.Reinaldo.Reversi.Utility
             return result;
         }
 
-        public static IEnumerable<Button> GetSouthPanels(IEnumerable<Button> board, int startIndex, Color enemyColor)
+        public static async Task<IEnumerable<Button>> GetSouthPanels(IEnumerable<Button> board, int startIndex, Color enemyColor)
         {
             Color playerColor = enemyColor == Color.Black ? Color.White : Color.Black;
 
@@ -49,7 +50,7 @@ namespace CBS.Reinaldo.Reversi.Utility
             return result;
         }
 
-        public static IEnumerable<Button> GetEastPanels(IEnumerable<Button> board, int startIndex, Color enemyColor)
+        public static async Task<IEnumerable<Button>> GetEastPanels(IEnumerable<Button> board, int startIndex, Color enemyColor)
         {
             Color playerColor = enemyColor == Color.Black ? Color.White : Color.Black;
 
@@ -73,7 +74,7 @@ namespace CBS.Reinaldo.Reversi.Utility
             return result;
         }
 
-        public static IEnumerable<Button> GetWestPanels(IEnumerable<Button> board, int startIndex, Color enemyColor)
+        public static async Task<IEnumerable<Button>> GetWestPanels(IEnumerable<Button> board, int startIndex, Color enemyColor)
         {
             Color playerColor = enemyColor == Color.Black ? Color.White : Color.Black;
 
@@ -97,7 +98,7 @@ namespace CBS.Reinaldo.Reversi.Utility
             return result;
         }
 
-        public static IEnumerable<Button> GetNorthEastPanels(IEnumerable<Button> board, int startIndex, Color enemyColor)
+        public static async Task<IEnumerable<Button>> GetNorthEastPanels(IEnumerable<Button> board, int startIndex, Color enemyColor)
         {
             Color playerColor = enemyColor == Color.Black ? Color.White : Color.Black;
 
@@ -130,7 +131,7 @@ namespace CBS.Reinaldo.Reversi.Utility
             return result;
         }
 
-        public static IEnumerable<Button> GetNorthWestPanels(IEnumerable<Button> board, int startIndex, Color enemyColor)
+        public static async Task<IEnumerable<Button>> GetNorthWestPanels(IEnumerable<Button> board, int startIndex, Color enemyColor)
         {
             Color playerColor = enemyColor == Color.Black ? Color.White : Color.Black;
 
@@ -163,7 +164,7 @@ namespace CBS.Reinaldo.Reversi.Utility
             return result;
         }
 
-        public static IEnumerable<Button> GetSouthEastPanels(IEnumerable<Button> board, int startIndex, Color enemyColor)
+        public static async Task<IEnumerable<Button>> GetSouthEastPanels(IEnumerable<Button> board, int startIndex, Color enemyColor)
         {
             Color playerColor = enemyColor == Color.Black ? Color.White : Color.Black;
 
@@ -197,7 +198,7 @@ namespace CBS.Reinaldo.Reversi.Utility
             return result;
         }
 
-        public static IEnumerable<Button> GetSouthWestPanels(IEnumerable<Button> board, int startIndex, Color enemyColor)
+        public static async Task<IEnumerable<Button>> GetSouthWestPanels(IEnumerable<Button> board, int startIndex, Color enemyColor)
         {
             Color playerColor = enemyColor == Color.Black ? Color.White : Color.Black;
 

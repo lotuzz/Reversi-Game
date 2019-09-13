@@ -6,7 +6,7 @@ namespace CBS.Reinaldo.Reversi.Entity
 {
     public class Player
     {
-        public List<int> AcquiredPanels { get; } = new List<int>();
+        public List<int> AcquiredPanels { get; protected set; } = new List<int>();
         public Color PlayerSide { get; set; }
 
         public void AcquirePanel(Button panel, Player enemy = null)
