@@ -12,8 +12,10 @@ namespace CBS.Reinaldo.Reversi.Entity
             PlayerSide = player.PlayerSide;
         }
 
-        public void AutoMove(IEnumerable<Button> board)
+        public async Task AutoMove(IEnumerable<Button> board)
         {
+            await Task.Delay(2000);
+
             Button maxPanel = new Button()
             {
                 Text = "0"

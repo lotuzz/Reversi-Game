@@ -110,7 +110,7 @@
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Othello Game";
-            this.Load += new System.EventHandler(this._StartGame);
+            this.Load += new System.EventHandler(_StartGame);
             this.ResumeLayout(false);
             this.PerformLayout();
 
