@@ -12,7 +12,7 @@ namespace CBS.Reinaldo.Reversi.Entity
             PlayerSide = player.PlayerSide;
         }
 
-        public async Task AutoMove(IEnumerable<Button> board)
+        public void AutoMove(IEnumerable<Button> board)
         {
             Button maxPanel = new Button()
             {
@@ -33,14 +33,12 @@ namespace CBS.Reinaldo.Reversi.Entity
 
                 if (panelCount >= maxPanelCount) maxPanel = panel;
             }
-
-            //await Task.Delay(2000);
+            
             if (maxPanel != null)
             {
                 maxPanel.Enabled = true;
                 maxPanel.PerformClick();
             }
-            return;
         }
     }
 }

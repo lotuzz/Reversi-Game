@@ -4,23 +4,21 @@ using System.Windows.Forms;
 using System.Linq;
 using System.Drawing;
 using System.Threading.Tasks;
-using System.Threading;
 
 namespace CBS.Reinaldo.Reversi.Utility
 {
     public static class BoardUtility
     {
-        public static void ResetPanelAccessAndText(IEnumerable<Button> board)
+        public static void DisablePanelAndResetText(IEnumerable<Button> board)
         {
             foreach (var btn in board)
             {
                 btn.Enabled = false;
                 btn.Text = string.Empty;
             }
-            Task.Delay(500);
         }
 
-        public static async void EnablePossiblePanel(IEnumerable<Button> board, Player player)
+        public static async Task EnablePossiblePanel(IEnumerable<Button> board, Player player)
         {
             foreach (var panelIndex in player.AcquiredPanels)
             {
@@ -34,7 +32,7 @@ namespace CBS.Reinaldo.Reversi.Utility
             }
         }
 
-        public static async void TryFlipEnemyDisks(IEnumerable<Button> board, Player player, Player enemy, int index)
+        public static async Task TryFlipEnemyDisks(IEnumerable<Button> board, Player player, Player enemy, int index)
         {
             var enemyColor = enemy.PlayerSide;
             bool isValid;
@@ -134,6 +132,8 @@ namespace CBS.Reinaldo.Reversi.Utility
                     player.AcquirePanel(panel, enemy);
                 }
             }
+
+            return;
         }
 
         public static void InitializeDisks(IEnumerable<Button> board, Player whitePlayer, Player blackPlayer)
@@ -179,6 +179,7 @@ namespace CBS.Reinaldo.Reversi.Utility
                 count = count + int.Parse(lastPanel.Text);
                 lastPanel.Text = count.ToString();
             }
+            return;
         }
 
         private static async Task _EnableSouth(IEnumerable<Button> board, Player player, int index)
@@ -206,6 +207,7 @@ namespace CBS.Reinaldo.Reversi.Utility
                 count = count + int.Parse(lastPanel.Text);
                 lastPanel.Text = count.ToString();
             }
+            return;
         }
 
         private static async Task _EnableEast(IEnumerable<Button> board, Player player, int index)
@@ -234,6 +236,7 @@ namespace CBS.Reinaldo.Reversi.Utility
                 count = count + int.Parse(lastPanel.Text);
                 lastPanel.Text = count.ToString();
             }
+            return;
         }
 
         private static async Task _EnableWest(IEnumerable<Button> board, Player player, int index)
@@ -262,6 +265,7 @@ namespace CBS.Reinaldo.Reversi.Utility
                 count = count + int.Parse(lastPanel.Text);
                 lastPanel.Text = count.ToString();
             }
+            return;
         }
 
         private static async Task _EnableNorthEast(IEnumerable<Button> board, Player player, int index)
@@ -293,6 +297,7 @@ namespace CBS.Reinaldo.Reversi.Utility
                 count = count + int.Parse(lastPanel.Text);
                 lastPanel.Text = count.ToString();
             }
+            return;
         }
 
         private static async Task _EnableSouthEast(IEnumerable<Button> board, Player player, int index)
@@ -324,6 +329,7 @@ namespace CBS.Reinaldo.Reversi.Utility
                 count = count + int.Parse(lastPanel.Text);
                 lastPanel.Text = count.ToString();
             }
+            return;
         }
 
         private static async Task _EnableSouthWest(IEnumerable<Button> board, Player player, int index)
@@ -355,6 +361,7 @@ namespace CBS.Reinaldo.Reversi.Utility
                 count = count + int.Parse(lastPanel.Text);
                 lastPanel.Text = count.ToString();
             }
+            return;
         }
 
         private static async Task _EnableNorthWest(IEnumerable<Button> board, Player player, int index)
@@ -386,6 +393,7 @@ namespace CBS.Reinaldo.Reversi.Utility
                 count = count + int.Parse(lastPanel.Text);
                 lastPanel.Text = count.ToString();
             }
+            return;
         }
         #endregion
     }

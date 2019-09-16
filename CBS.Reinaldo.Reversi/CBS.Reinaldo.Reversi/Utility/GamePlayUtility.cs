@@ -21,12 +21,11 @@ namespace CBS.Reinaldo.Reversi.Utility
             {
                 if (int.TryParse(panel.Text, out var count) && panel.ForeColor == currentTurn.PlayerSide)
                 {
-                    BoardUtility.ResetPanelAccessAndText(board);
                     return true;
                 }
             }
 
-            BoardUtility.ResetPanelAccessAndText(board);
+            BoardUtility.DisablePanelAndResetText(board);
             return false;
         }
     }

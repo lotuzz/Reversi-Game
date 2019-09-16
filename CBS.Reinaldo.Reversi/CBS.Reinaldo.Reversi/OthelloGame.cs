@@ -33,14 +33,7 @@ namespace CBS.Reinaldo.Reversi
             _InitializePlayers();
             _CreateBoard();
         }
-
-        private void _RestartGame()
-        {
-            Controls.Clear();
-            InitializeComponent();
-            _StartGame(this, null);
-        }
-
+        
         //Event Handler
         private void _GetMove(object sender, EventArgs e)
         {
@@ -50,9 +43,8 @@ namespace CBS.Reinaldo.Reversi
             GamePlayUtility.MakeMove(_CurrentTurn, btn);
 
             //Try Flip Enemy Disks
-            BoardUtility.ResetPanelAccessAndText(_Board);
+            BoardUtility.DisablePanelAndResetText(_Board);
             BoardUtility.TryFlipEnemyDisks(_Board, _CurrentTurn, _Enemy(), _Index(btn));
-            //MessageBox.Show("Fliped");
 
             //Update Score Display
             _DisplayScore();
@@ -61,7 +53,7 @@ namespace CBS.Reinaldo.Reversi
             _NextTurn();
         }
 
-        private void _NextTurn()
+        private async Task _NextTurn()
         {
             _CurrentTurn = _Enemy();
             _PlayerTurnLabel.Text = _CurrentTurn.PlayerSide.Name;
@@ -70,23 +62,19 @@ namespace CBS.Reinaldo.Reversi
             {
                 if (!GamePlayUtility.IsPossibleToMove(_Board, _Enemy()))
                 {
-                    //Game Over
-                    var whiteScore = _WhitePlayer.AcquiredPanels.Count;
-                    var blackScore = _BlackPlayer.AcquiredPanels.Count;
-                    var winner = whiteScore > blackScore ? _WhitePlayer : _BlackPlayer;
-
-                    MessageBox.Show($"White Score = {whiteScore} {Environment.NewLine} Black Score = {blackScore} ", $"[GAME OVER] {winner.PlayerSide.Name} Player Win");
-
-                    _RestartGame();
+                    _GameOver();
                     return;
                 }
                 MessageBox.Show($"[{_CurrentTurn.PlayerSide.Name}] Player can't move. [{_Enemy().PlayerSide.Name}] Turn", "Game Notification");
 
-                _NextTurn();
+                await _NextTurn();
             }
-            BoardUtility.EnablePossiblePanel(_Board, _CurrentTurn);
 
-            if (_CurrentTurn is GreedyAI player) player.AutoMove(_Board);
+            if (_CurrentTurn is GreedyAI player)
+            {
+                await Task.Delay(2000);
+                player.AutoMove(_Board);
+            }
         }
 
         #region Called Once
@@ -97,7 +85,7 @@ namespace CBS.Reinaldo.Reversi
             {
                 Controls.Add(_CreatePanel(i));
             }
-            _Board = Controls.OfType<Button>();
+            _Board = Controls.OfType<Button>().ToList();
 
             //Initialize Disks
             BoardUtility.InitializeDisks(_Board, _WhitePlayer, _BlackPlayer);
@@ -165,6 +153,18 @@ namespace CBS.Reinaldo.Reversi
                 _WhitePlayer = new GreedyAI(_WhitePlayer);
             }
         }
+
+        private void _GameOver()
+        {
+
+            var whiteScore = _WhitePlayer.AcquiredPanels.Count;
+            var blackScore = _BlackPlayer.AcquiredPanels.Count;
+            var winner = whiteScore > blackScore ? _WhitePlayer : _BlackPlayer;
+
+            MessageBox.Show($"White Score = {whiteScore} {Environment.NewLine} Black Score = {blackScore} ", $"[GAME OVER] {winner.PlayerSide.Name} Player Win");
+
+            _RestartGame();
+        }
         #endregion
 
         private Player _Enemy()
@@ -181,6 +181,13 @@ namespace CBS.Reinaldo.Reversi
         {
             _WhitePlayerScoreLabel.Text = _WhitePlayer.AcquiredPanels.Count.ToString();
             _BlackPlayerScoreLabel.Text = _BlackPlayer.AcquiredPanels.Count.ToString();
+        }
+
+        private void _RestartGame()
+        {
+            Controls.Clear();
+            InitializeComponent();
+            _StartGame(this, null);
         }
     }
 }
