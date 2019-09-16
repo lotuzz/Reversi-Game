@@ -63,19 +63,28 @@
   <ItemGroup>
     <Compile Include="Entity\GreedyAI.cs" />
     <Compile Include="Entity\Player.cs" />
-    <Compile Include="Form1.cs">
+    <Compile Include="OthelloGame.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="OthelloGame.Designer.cs">
+      <DependentUpon>OthelloGame.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainMenu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainMenu.Designer.cs">
+      <DependentUpon>MainMenu.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility\BoardUtility.cs" />
     <Compile Include="Utility\DirectionUtility.cs" />
     <Compile Include="Utility\GamePlayUtility.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="OthelloGame.resx">
+      <DependentUpon>OthelloGame.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainMenu.resx">
+      <DependentUpon>MainMenu.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

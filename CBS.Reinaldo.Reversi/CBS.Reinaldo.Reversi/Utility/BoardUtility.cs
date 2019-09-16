@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using System.Linq;
 using System.Drawing;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace CBS.Reinaldo.Reversi.Utility
 {
@@ -11,11 +12,12 @@ namespace CBS.Reinaldo.Reversi.Utility
     {
         public static void ResetPanelAccessAndText(IEnumerable<Button> board)
         {
-            foreach(var btn in board)
+            foreach (var btn in board)
             {
                 btn.Enabled = false;
                 btn.Text = string.Empty;
             }
+            Task.Delay(500);
         }
 
         public static async void EnablePossiblePanel(IEnumerable<Button> board, Player player)
@@ -34,8 +36,6 @@ namespace CBS.Reinaldo.Reversi.Utility
 
         public static async void TryFlipEnemyDisks(IEnumerable<Button> board, Player player, Player enemy, int index)
         {
-            ResetPanelAccessAndText(board);
-
             var enemyColor = enemy.PlayerSide;
             bool isValid;
 
@@ -168,7 +168,7 @@ namespace CBS.Reinaldo.Reversi.Utility
             var lastPanel = board.ElementAt(lastPanelIndex);
             if (lastPanel.BackColor != Color.Lime) return;
 
-            lastPanel.Enabled = true;
+            if(!(player is GreedyAI)) lastPanel.Enabled = true;
             lastPanel.ForeColor = player.PlayerSide;
             if (string.IsNullOrEmpty(lastPanel.Text))
             {
@@ -195,7 +195,7 @@ namespace CBS.Reinaldo.Reversi.Utility
             var lastPanel = board.ElementAt(lastPanelIndex);
             if (lastPanel.BackColor != Color.Lime) return;
 
-            lastPanel.Enabled = true;
+            if(!(player is GreedyAI)) lastPanel.Enabled = true;
             lastPanel.ForeColor = player.PlayerSide;
             if (string.IsNullOrEmpty(lastPanel.Text))
             {
@@ -223,7 +223,7 @@ namespace CBS.Reinaldo.Reversi.Utility
             var lastPanel = board.ElementAt(lastPanelIndex);
             if (lastPanel.BackColor != Color.Lime) return;
 
-            lastPanel.Enabled = true;
+            if(!(player is GreedyAI)) lastPanel.Enabled = true;
             lastPanel.ForeColor = player.PlayerSide;
             if (string.IsNullOrEmpty(lastPanel.Text))
             {
@@ -251,7 +251,7 @@ namespace CBS.Reinaldo.Reversi.Utility
             var lastPanel = board.ElementAt(lastPanelIndex);
             if (lastPanel.BackColor != Color.Lime) return;
 
-            lastPanel.Enabled = true;
+            if(!(player is GreedyAI)) lastPanel.Enabled = true;
             lastPanel.ForeColor = player.PlayerSide;
             if (string.IsNullOrEmpty(lastPanel.Text))
             {
@@ -282,7 +282,7 @@ namespace CBS.Reinaldo.Reversi.Utility
             var lastPanel = board.ElementAt(lastPanelIndex);
             if (lastPanel.BackColor != Color.Lime) return;
 
-            lastPanel.Enabled = true;
+            if(!(player is GreedyAI)) lastPanel.Enabled = true;
             lastPanel.ForeColor = player.PlayerSide;
             if (string.IsNullOrEmpty(lastPanel.Text))
             {
@@ -313,7 +313,7 @@ namespace CBS.Reinaldo.Reversi.Utility
             var lastPanel = board.ElementAt(lastPanelIndex);
             if (lastPanel.BackColor != Color.Lime) return;
 
-            lastPanel.Enabled = true;
+            if(!(player is GreedyAI)) lastPanel.Enabled = true;
             lastPanel.ForeColor = player.PlayerSide;
             if (string.IsNullOrEmpty(lastPanel.Text))
             {
@@ -344,7 +344,7 @@ namespace CBS.Reinaldo.Reversi.Utility
             var lastPanel = board.ElementAt(lastPanelIndex);
             if (lastPanel.BackColor != Color.Lime) return;
 
-            lastPanel.Enabled = true;
+            if(!(player is GreedyAI)) lastPanel.Enabled = true;
             lastPanel.ForeColor = player.PlayerSide;
             if (string.IsNullOrEmpty(lastPanel.Text))
             {
@@ -375,7 +375,7 @@ namespace CBS.Reinaldo.Reversi.Utility
             var lastPanel = board.ElementAt(lastPanelIndex);
             if (lastPanel.BackColor != Color.Lime) return;
 
-            lastPanel.Enabled = true;
+            if(!(player is GreedyAI)) lastPanel.Enabled = true;
             lastPanel.ForeColor = player.PlayerSide;
             if (string.IsNullOrEmpty(lastPanel.Text))
             {

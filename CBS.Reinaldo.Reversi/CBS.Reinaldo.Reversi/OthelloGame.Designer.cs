@@ -1,6 +1,6 @@
 ﻿namespace CBS.Reinaldo.Reversi
 {
-    partial class Form1
+    partial class OthelloGame
     {
         /// <summary>
         /// Required designer variable.
@@ -96,7 +96,7 @@
             this._BlackPlayerScoreLabel.TabIndex = 31;
             this._BlackPlayerScoreLabel.Text = "0";
             // 
-            // Form1
+            // OthelloGame Board
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;

@@ -5,11 +5,12 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CBS.Reinaldo.Reversi
 {
-    public partial class Form1 : Form
+    public partial class OthelloGame : Form
     {
         private int _Size = 45;
         private Point InitialPoint = new Point(45, 60);
@@ -17,23 +18,20 @@ namespace CBS.Reinaldo.Reversi
         private Player _BlackPlayer;
         private Player _WhitePlayer;
         private Player _CurrentTurn;
+        private Color? _AIColor = null;
 
         private IEnumerable<Button> _Board;
 
-        public Form1()
+        public OthelloGame(Color? AI)
         {
             InitializeComponent();
+            _AIColor = AI;
         }
 
         private void _StartGame(object sender, EventArgs e)
         {
-            _CreateBoard();
             _InitializePlayers();
-
-            //Enable Panels
-            BoardUtility.EnablePossiblePanel(_Board, _CurrentTurn);
-
-            _DisplayScore();
+            _CreateBoard();
         }
 
         private void _RestartGame()
@@ -52,13 +50,14 @@ namespace CBS.Reinaldo.Reversi
             GamePlayUtility.MakeMove(_CurrentTurn, btn);
 
             //Try Flip Enemy Disks
+            BoardUtility.ResetPanelAccessAndText(_Board);
             BoardUtility.TryFlipEnemyDisks(_Board, _CurrentTurn, _Enemy(), _Index(btn));
+            //MessageBox.Show("Fliped");
 
             //Update Score Display
             _DisplayScore();
 
             //Set Next Turn
-            MessageBox.Show("Waow");
             _NextTurn();
         }
 
@@ -85,6 +84,7 @@ namespace CBS.Reinaldo.Reversi
 
                 _NextTurn();
             }
+            BoardUtility.EnablePossiblePanel(_Board, _CurrentTurn);
 
             if (_CurrentTurn is GreedyAI player) player.AutoMove(_Board);
         }
@@ -98,6 +98,16 @@ namespace CBS.Reinaldo.Reversi
                 Controls.Add(_CreatePanel(i));
             }
             _Board = Controls.OfType<Button>();
+
+            //Initialize Disks
+            BoardUtility.InitializeDisks(_Board, _WhitePlayer, _BlackPlayer);
+
+            //Enable Panels
+            BoardUtility.EnablePossiblePanel(_Board, _CurrentTurn);
+
+            _DisplayScore();
+
+            if (_CurrentTurn is GreedyAI player) player.AutoMove(_Board);
         }
         
         private void _InitializePlayers()
@@ -106,16 +116,14 @@ namespace CBS.Reinaldo.Reversi
             {
                 PlayerSide = Color.Black
             };
-            _WhitePlayer = new GreedyAI
+            _WhitePlayer = new Player
             {
                 PlayerSide = Color.White
             };
+            _SetAI();
 
             _CurrentTurn = _BlackPlayer;
             _PlayerTurnLabel.Text = _CurrentTurn.PlayerSide.Name;
-            
-            //Initialize Disks
-            BoardUtility.InitializeDisks(_Board, _WhitePlayer, _BlackPlayer);
         }
 
         private Button _CreatePanel(int index)
@@ -139,6 +147,23 @@ namespace CBS.Reinaldo.Reversi
             };
             btn.Click += new EventHandler(_GetMove);
             return btn;
+        }
+
+        private void _SetAI()
+        {
+            if(!_AIColor.HasValue)
+            {
+                return;
+            }
+
+            if(_AIColor.Value == Color.Black)
+            {
+                _BlackPlayer = new GreedyAI(_BlackPlayer);
+            }
+            else if(_AIColor.Value == Color.White)
+            {
+                _WhitePlayer = new GreedyAI(_WhitePlayer);
+            }
         }
         #endregion
 
