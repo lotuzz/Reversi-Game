@@ -166,9 +166,29 @@ namespace CBS.Reinaldo.Reversi
             var blackScore = _BlackPlayer.AcquiredPanels.Count;
             var winner = whiteScore > blackScore ? _WhitePlayer : _BlackPlayer;
 
+            _InsertHistory(winner);
             MessageBox.Show($"White Score = {whiteScore} {Environment.NewLine} Black Score = {blackScore} ", $"[GAME OVER] {winner.PlayerSide.Name} Player Win");
 
-            _RestartGame();
+            //_RestartGame();
+            _BackToMainMenu();
+        }
+
+        private void _InsertHistory(Player winner)
+        {
+            var history = new GameHistory
+            {
+                White = _WhitePlayer.GetType().ToString(),
+                Black = _BlackPlayer.GetType().ToString(),
+                DatePlayed = DateTime.UtcNow,
+                Winner = winner.PlayerSide.Name.ToString()
+            };
+        }
+
+        private void _BackToMainMenu()
+        {
+            var mainMenu = new MainMenu();
+
+            mainMenu.Show();
         }
         #endregion
 
