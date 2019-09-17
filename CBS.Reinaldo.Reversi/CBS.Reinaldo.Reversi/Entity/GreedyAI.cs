@@ -14,6 +14,8 @@ namespace CBS.Reinaldo.Reversi.Entity
 
         public async Task AutoMove(IEnumerable<Button> board)
         {
+            await Task.Delay(2000);
+
             Button maxPanel = new Button()
             {
                 Text = "0"
@@ -33,14 +35,12 @@ namespace CBS.Reinaldo.Reversi.Entity
 
                 if (panelCount >= maxPanelCount) maxPanel = panel;
             }
-
-            //await Task.Delay(2000);
+            
             if (maxPanel != null)
             {
                 maxPanel.Enabled = true;
                 maxPanel.PerformClick();
             }
-            return;
         }
     }
 }

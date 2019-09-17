@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CBS.Reinaldo.Reversi.Utility
@@ -14,19 +15,18 @@ namespace CBS.Reinaldo.Reversi.Utility
             currentPlayer.AcquirePanel((Button)btn);
         }
 
-        public static bool IsPossibleToMove(IEnumerable<Button> board, Player currentTurn)
+        public static async Task<bool> IsPossibleToMove(IEnumerable<Button> board, Player currentTurn)
         {
-            BoardUtility.EnablePossiblePanel(board, currentTurn);
+            await BoardUtility.EnablePossiblePanel(board, currentTurn);
             foreach (var panel in board)
             {
                 if (int.TryParse(panel.Text, out var count) && panel.ForeColor == currentTurn.PlayerSide)
                 {
-                    BoardUtility.ResetPanelAccessAndText(board);
                     return true;
                 }
             }
 
-            BoardUtility.ResetPanelAccessAndText(board);
+            BoardUtility.DisablePanelAndResetText(board);
             return false;
         }
     }
