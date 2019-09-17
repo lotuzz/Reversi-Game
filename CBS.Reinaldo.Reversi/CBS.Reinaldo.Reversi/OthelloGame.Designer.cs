@@ -28,12 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this._PlayerTurnLabel = new System.Windows.Forms.Label();
             this._labelTurn = new System.Windows.Forms.Label();
             this._whitePlayerLabel = new System.Windows.Forms.Label();
             this._WhitePlayerScoreLabel = new System.Windows.Forms.Label();
             this._blackPlayerLabel = new System.Windows.Forms.Label();
             this._BlackPlayerScoreLabel = new System.Windows.Forms.Label();
+            this._gameTimer = new System.Windows.Forms.Timer(this.components);
+            this._gameTimerLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // _PlayerTurnLabel
@@ -72,7 +75,7 @@
             this._WhitePlayerScoreLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._WhitePlayerScoreLabel.Location = new System.Drawing.Point(615, 91);
             this._WhitePlayerScoreLabel.Name = "_WhitePlayerScoreLabel";
-            this._WhitePlayerScoreLabel.Size = new System.Drawing.Size(70, 22);
+            this._WhitePlayerScoreLabel.Size = new System.Drawing.Size(20, 22);
             this._WhitePlayerScoreLabel.TabIndex = 21;
             this._WhitePlayerScoreLabel.Text = "0";
             // 
@@ -92,25 +95,40 @@
             this._BlackPlayerScoreLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._BlackPlayerScoreLabel.Location = new System.Drawing.Point(615, 151);
             this._BlackPlayerScoreLabel.Name = "_BlackPlayerScoreLabel";
-            this._BlackPlayerScoreLabel.Size = new System.Drawing.Size(70, 22);
+            this._BlackPlayerScoreLabel.Size = new System.Drawing.Size(20, 22);
             this._BlackPlayerScoreLabel.TabIndex = 31;
             this._BlackPlayerScoreLabel.Text = "0";
             // 
-            // OthelloGame Board
+            // _gameTimer
+            // 
+            this._gameTimer.Interval = 1000;
+            this._gameTimer.Tick += new System.EventHandler(this._gameTimer_Tick);
+            // 
+            // label1
+            // 
+            this._gameTimerLabel.AutoSize = true;
+            this._gameTimerLabel.Location = new System.Drawing.Point(518, 29);
+            this._gameTimerLabel.Name = "label1";
+            this._gameTimerLabel.Size = new System.Drawing.Size(13, 13);
+            this._gameTimerLabel.TabIndex = 32;
+            this._gameTimerLabel.Text = "0";
+            // 
+            // OthelloGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(695, 450);
+            this.Controls.Add(this._gameTimerLabel);
             this.Controls.Add(this._whitePlayerLabel);
             this.Controls.Add(this._WhitePlayerScoreLabel);
             this.Controls.Add(this._blackPlayerLabel);
             this.Controls.Add(this._BlackPlayerScoreLabel);
             this.Controls.Add(this._labelTurn);
             this.Controls.Add(this._PlayerTurnLabel);
-            this.Name = "Form1";
+            this.Name = "OthelloGame";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Othello Game";
-            this.Load += new System.EventHandler(_StartGame);
+            this.Load += new System.EventHandler(this._StartGame);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -126,6 +144,8 @@
 
         private System.Windows.Forms.Label _blackPlayerLabel;
         private System.Windows.Forms.Label _BlackPlayerScoreLabel;
+        private System.Windows.Forms.Timer _gameTimer;
+        private System.Windows.Forms.Label _gameTimerLabel;
     }
 }
 

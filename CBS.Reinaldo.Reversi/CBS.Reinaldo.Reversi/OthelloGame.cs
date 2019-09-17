@@ -21,6 +21,7 @@ namespace CBS.Reinaldo.Reversi
         private Color? _AIColor = null;
 
         private IEnumerable<Button> _Board;
+        private int _ticks = 0;
 
         public OthelloGame(Color? AI)
         {
@@ -32,6 +33,8 @@ namespace CBS.Reinaldo.Reversi
         {
             _InitializePlayers();
             await _CreateBoard();
+
+            _gameTimer.Start();
         }
         
         //Event Handler
@@ -157,6 +160,7 @@ namespace CBS.Reinaldo.Reversi
 
         private void _GameOver()
         {
+            _gameTimer.Stop();
 
             var whiteScore = _WhitePlayer.AcquiredPanels.Count;
             var blackScore = _BlackPlayer.AcquiredPanels.Count;
@@ -189,6 +193,12 @@ namespace CBS.Reinaldo.Reversi
             Controls.Clear();
             InitializeComponent();
             _StartGame(this, null);
+        }
+
+        private void _gameTimer_Tick(object sender, EventArgs e)
+        {
+            _ticks++;
+            _gameTimerLabel.Text = _ticks.ToString();
         }
     }
 }
