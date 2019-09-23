@@ -15,18 +15,20 @@ namespace CBS.Reinaldo.Reversi.Utility
             currentPlayer.AcquirePanel((Button)btn);
         }
 
-        public static async Task<bool> IsPossibleToMove(IEnumerable<Button> board, Player currentTurn)
+        /// <summary>
+        /// Enable possible panels (if any)
+        /// </summary>
+        /// <param name="board"></param>
+        /// <param name="currentTurn"></param>
+        /// <returns>true if any possible panel, false if not any</returns>
+        public static bool IsPossibleToMove(IEnumerable<Button> board, Player currentTurn)
         {
-            await BoardUtility.EnablePossiblePanel(board, currentTurn);
-            foreach (var panel in board)
+            var posiblePanels = BoardUtility.EnablePossiblePanel(board, currentTurn).Result;
+            if(posiblePanels > 0)
             {
-                if (int.TryParse(panel.Text, out var count) && panel.ForeColor == currentTurn.PlayerSide)
-                {
-                    return true;
-                }
+                return true;
             }
 
-            BoardUtility.DisablePanelAndResetText(board);
             return false;
         }
     }

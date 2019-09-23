@@ -35,8 +35,9 @@
             this._WhitePlayerScoreLabel = new System.Windows.Forms.Label();
             this._blackPlayerLabel = new System.Windows.Forms.Label();
             this._BlackPlayerScoreLabel = new System.Windows.Forms.Label();
-            this._gameTimer = new System.Windows.Forms.Timer(this.components);
+            this._GameTimer = new System.Windows.Forms.Timer(this.components);
             this._gameTimerLabel = new System.Windows.Forms.Label();
+            this._elapsedTimeLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // _PlayerTurnLabel
@@ -99,25 +100,37 @@
             this._BlackPlayerScoreLabel.TabIndex = 31;
             this._BlackPlayerScoreLabel.Text = "0";
             // 
-            // _gameTimer
+            // _GameTimer
             // 
-            this._gameTimer.Interval = 1000;
-            this._gameTimer.Tick += new System.EventHandler(this._gameTimer_Tick);
+            this._GameTimer.Interval = 1000;
+            this._GameTimer.Tick += new System.EventHandler(this._gameTimer_Tick);
             // 
-            // label1
+            // _gameTimerLabel
             // 
             this._gameTimerLabel.AutoSize = true;
-            this._gameTimerLabel.Location = new System.Drawing.Point(518, 29);
-            this._gameTimerLabel.Name = "label1";
-            this._gameTimerLabel.Size = new System.Drawing.Size(13, 13);
+            this._gameTimerLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._gameTimerLabel.Location = new System.Drawing.Point(592, 33);
+            this._gameTimerLabel.Name = "_gameTimerLabel";
+            this._gameTimerLabel.Size = new System.Drawing.Size(17, 17);
             this._gameTimerLabel.TabIndex = 32;
             this._gameTimerLabel.Text = "0";
+            // 
+            // _elapsedTimeLabel
+            // 
+            this._elapsedTimeLabel.AutoSize = true;
+            this._elapsedTimeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._elapsedTimeLabel.Location = new System.Drawing.Point(469, 30);
+            this._elapsedTimeLabel.Name = "_elapsedTimeLabel";
+            this._elapsedTimeLabel.Size = new System.Drawing.Size(105, 20);
+            this._elapsedTimeLabel.TabIndex = 33;
+            this._elapsedTimeLabel.Text = "Elapsed Time";
             // 
             // OthelloGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(695, 450);
+            this.Controls.Add(this._elapsedTimeLabel);
             this.Controls.Add(this._gameTimerLabel);
             this.Controls.Add(this._whitePlayerLabel);
             this.Controls.Add(this._WhitePlayerScoreLabel);
@@ -144,8 +157,9 @@
 
         private System.Windows.Forms.Label _blackPlayerLabel;
         private System.Windows.Forms.Label _BlackPlayerScoreLabel;
-        private System.Windows.Forms.Timer _gameTimer;
+        private System.Windows.Forms.Timer _GameTimer;
         private System.Windows.Forms.Label _gameTimerLabel;
+        private System.Windows.Forms.Label _elapsedTimeLabel;
     }
 }
 

@@ -8,13 +8,13 @@ namespace CBS.Reinaldo.Reversi
 {
     public partial class MainMenu : Form
     {
-        private OthelloRepository _othelloRepository = new OthelloRepository();
-        private List<GameHistory> _gameHistories;
+        //private OthelloRepository _othelloRepository = new OthelloRepository();
+        //private List<GameHistory> _gameHistories;
 
         public MainMenu()
         {
             InitializeComponent();
-            _gameHistories = _othelloRepository.GetAll();
+            //_gameHistories = _othelloRepository.GetAll();
         }
 
         private void _PVPButton_Click(object sender, System.EventArgs e)

@@ -33,13 +33,7 @@
             this._OtheloMainMenuLabel = new System.Windows.Forms.Label();
             this._DeveloperNameLabel = new System.Windows.Forms.Label();
             this._BlackPlayerButton = new System.Windows.Forms.Button();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this._gameHistoryLabel = new System.Windows.Forms.Label();
-            this.Winner = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Date = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Black = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.White = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this._greedyAIOption = new System.Windows.Forms.RadioButton();
             this.SuspendLayout();
             // 
             // _PVPButton
@@ -56,7 +50,7 @@
             // _WhitePlayerButton
             // 
             this._WhitePlayerButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._WhitePlayerButton.Location = new System.Drawing.Point(222, 138);
+            this._WhitePlayerButton.Location = new System.Drawing.Point(194, 138);
             this._WhitePlayerButton.Name = "_WhitePlayerButton";
             this._WhitePlayerButton.Size = new System.Drawing.Size(100, 39);
             this._WhitePlayerButton.TabIndex = 1;
@@ -87,7 +81,7 @@
             // _BlackPlayerButton
             // 
             this._BlackPlayerButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._BlackPlayerButton.Location = new System.Drawing.Point(222, 93);
+            this._BlackPlayerButton.Location = new System.Drawing.Point(194, 93);
             this._BlackPlayerButton.Name = "_BlackPlayerButton";
             this._BlackPlayerButton.Size = new System.Drawing.Size(100, 39);
             this._BlackPlayerButton.TabIndex = 4;
@@ -95,59 +89,26 @@
             this._BlackPlayerButton.UseVisualStyleBackColor = true;
             this._BlackPlayerButton.Click += new System.EventHandler(this._BlackPlayerButton_Click);
             // 
-            // dataGridView1
+            // _greedyAIOption
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.White,
-            this.Black,
-            this.Date,
-            this.Winner});
-            this.dataGridView1.Location = new System.Drawing.Point(28, 226);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(294, 150);
-            this.dataGridView1.TabIndex = 5;
-            // 
-            // _gameHistoryLabel
-            // 
-            this._gameHistoryLabel.AutoSize = true;
-            this._gameHistoryLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._gameHistoryLabel.Location = new System.Drawing.Point(120, 201);
-            this._gameHistoryLabel.Name = "_gameHistoryLabel";
-            this._gameHistoryLabel.Size = new System.Drawing.Size(119, 22);
-            this._gameHistoryLabel.TabIndex = 7;
-            this._gameHistoryLabel.Text = "Game History";
-            // 
-            // Winner
-            // 
-            this.Winner.HeaderText = "Winner";
-            this.Winner.Name = "Winner";
-            this.Winner.Width = 50;
-            // 
-            // Date
-            // 
-            this.Date.HeaderText = "Date Played";
-            this.Date.Name = "Date";
-            // 
-            // Black
-            // 
-            this.Black.HeaderText = "Black Disks";
-            this.Black.Name = "Black";
-            this.Black.Width = 50;
-            // 
-            // White
-            // 
-            this.White.HeaderText = "White Disks";
-            this.White.Name = "White";
-            this.White.Width = 50;
+            this._greedyAIOption.AutoSize = true;
+            this._greedyAIOption.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this._greedyAIOption.Checked = true;
+            this._greedyAIOption.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._greedyAIOption.Location = new System.Drawing.Point(317, 104);
+            this._greedyAIOption.Name = "_greedyAIOption";
+            this._greedyAIOption.Size = new System.Drawing.Size(81, 17);
+            this._greedyAIOption.TabIndex = 5;
+            this._greedyAIOption.TabStop = true;
+            this._greedyAIOption.Text = "Greedy AI";
+            this._greedyAIOption.UseVisualStyleBackColor = false;
             // 
             // MainMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(361, 450);
-            this.Controls.Add(this._gameHistoryLabel);
-            this.Controls.Add(this.dataGridView1);
+            this.ClientSize = new System.Drawing.Size(420, 189);
+            this.Controls.Add(this._greedyAIOption);
             this.Controls.Add(this._BlackPlayerButton);
             this.Controls.Add(this._DeveloperNameLabel);
             this.Controls.Add(this._OtheloMainMenuLabel);
@@ -156,7 +117,6 @@
             this.Name = "MainMenu";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MainMenu";
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -169,11 +129,6 @@
         private System.Windows.Forms.Label _OtheloMainMenuLabel;
         private System.Windows.Forms.Label _DeveloperNameLabel;
         private System.Windows.Forms.Button _BlackPlayerButton;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.Label _gameHistoryLabel;
-        private System.Windows.Forms.DataGridViewTextBoxColumn White;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Black;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Date;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Winner;
+        private System.Windows.Forms.RadioButton _greedyAIOption;
     }
 }
