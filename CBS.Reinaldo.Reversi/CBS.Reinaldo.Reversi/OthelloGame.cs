@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -32,15 +31,22 @@ namespace CBS.Reinaldo.Reversi
         private async void _StartGame(object sender, EventArgs e)
         {
             _InitializePlayers();
-            await _CreateBoard();
+            _CreateBoard();
+            
+            //Enable Panels
+            await BoardUtility.EnablePossiblePanel(_Board, _CurrentTurn);
 
-            _gameTimer.Start();
+            _GameTimer.Start();
+
+            if (_CurrentTurn is GreedyAI player)
+            {
+                await player.AutoMove(_Board);
+            }
         }
         
         //Event Handler
         private async void _GetMove(object sender, EventArgs e)
         {
-            BoardUtility.DisablePanelAndResetText(_Board);
             Button btn = (Button)sender;
 
             //MakeMove
@@ -57,17 +63,16 @@ namespace CBS.Reinaldo.Reversi
         }
 
         private async Task _NextTurn()
-        {            
-            if (!await GamePlayUtility.IsPossibleToMove(_Board, _Enemy()))
+        {
+            BoardUtility.DisablePanelAndResetText(_Board);
+            if (!GamePlayUtility.IsPossibleToMove(_Board, _Enemy()))
             {
-                if (!await GamePlayUtility.IsPossibleToMove(_Board, _CurrentTurn))
+                if (!GamePlayUtility.IsPossibleToMove(_Board, _CurrentTurn))
                 {
                     _GameOver();
                     return;
                 }
                 MessageBox.Show($"[{_Enemy().PlayerSide.Name}] Player can't move. [{_CurrentTurn.PlayerSide.Name}] Turn", "Game Notification");
-
-                //await _NextTurn();
             }
 
             _CurrentTurn = _Enemy();
@@ -79,7 +84,7 @@ namespace CBS.Reinaldo.Reversi
         }
 
         #region Called Once
-        private async Task _CreateBoard()
+        private void _CreateBoard()
         {
             //Generate 8x8 Panel
             for (int i = 0; i <= 63; i++)
@@ -91,15 +96,7 @@ namespace CBS.Reinaldo.Reversi
             //Initialize Disks
             BoardUtility.InitializeDisks(_Board, _WhitePlayer, _BlackPlayer);
 
-            //Enable Panels
-            await BoardUtility.EnablePossiblePanel(_Board, _CurrentTurn);
-
             _DisplayScore();
-
-            if (_CurrentTurn is GreedyAI player)
-            {
-                await player.AutoMove(_Board);
-            }
         }
         
         private void _InitializePlayers()
@@ -160,7 +157,7 @@ namespace CBS.Reinaldo.Reversi
 
         private void _GameOver()
         {
-            _gameTimer.Stop();
+            _GameTimer.Stop();
 
             var whiteScore = _WhitePlayer.AcquiredPanels.Count;
             var blackScore = _BlackPlayer.AcquiredPanels.Count;
@@ -190,6 +187,13 @@ namespace CBS.Reinaldo.Reversi
 
             mainMenu.Show();
         }
+        
+        private void _RestartGame()
+        {
+            Controls.Clear();
+            InitializeComponent();
+            _StartGame(this, null);
+        }
         #endregion
 
         private Player _Enemy()
@@ -206,13 +210,6 @@ namespace CBS.Reinaldo.Reversi
         {
             _WhitePlayerScoreLabel.Text = _WhitePlayer.AcquiredPanels.Count.ToString();
             _BlackPlayerScoreLabel.Text = _BlackPlayer.AcquiredPanels.Count.ToString();
-        }
-
-        private void _RestartGame()
-        {
-            Controls.Clear();
-            InitializeComponent();
-            _StartGame(this, null);
         }
 
         private void _gameTimer_Tick(object sender, EventArgs e)

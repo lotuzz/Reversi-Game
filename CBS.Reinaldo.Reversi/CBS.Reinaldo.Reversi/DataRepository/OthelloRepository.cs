@@ -7,7 +7,7 @@ namespace CBS.Reinaldo.Reversi.DataRepository
 {
     public class OthelloRepository
     {
-        private string _Directory { get; set; } = "DataRepository/OthelloGameData.json";
+        private string _Directory { get; set; } = @"../CBS.Reinaldo.Reversi/DataRepository/OthelloGameData.json";
         private List<GameHistory> _GameHistories { get; set; } = new List<GameHistory>();
 
         public OthelloRepository ()

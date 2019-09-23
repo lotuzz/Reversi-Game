@@ -41,6 +41,8 @@ namespace CBS.Reinaldo.Reversi.Entity
                 maxPanel.Enabled = true;
                 maxPanel.PerformClick();
             }
+
+            return;
         }
     }
 }
