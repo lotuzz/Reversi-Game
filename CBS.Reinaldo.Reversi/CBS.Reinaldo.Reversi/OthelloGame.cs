@@ -48,17 +48,10 @@ namespace CBS.Reinaldo.Reversi
         private async void _GetMove(object sender, EventArgs e)
         {
             Button btn = (Button)sender;
-
-            //MakeMove
+            
             GamePlayUtility.MakeMove(_CurrentTurn, btn);
-
-            //Try Flip Enemy Disks
             await BoardUtility.TryFlipEnemyDisks(_Board, _CurrentTurn, _Enemy(), _Index(btn));
-
-            //Update Score Display
-            _DisplayScore();
-
-            //Set Next Turn
+            _UpdateDisplayScore();
             await _NextTurn();
         }
 
@@ -72,7 +65,9 @@ namespace CBS.Reinaldo.Reversi
                     _GameOver();
                     return;
                 }
+
                 MessageBox.Show($"[{_Enemy().PlayerSide.Name}] Player can't move. [{_CurrentTurn.PlayerSide.Name}] Turn", "Game Notification");
+                return;
             }
 
             _CurrentTurn = _Enemy();
@@ -81,6 +76,7 @@ namespace CBS.Reinaldo.Reversi
             {
                 await player.AutoMove(_Board);
             }
+            return;
         }
 
         #region Called Once
@@ -96,7 +92,7 @@ namespace CBS.Reinaldo.Reversi
             //Initialize Disks
             BoardUtility.InitializeDisks(_Board, _WhitePlayer, _BlackPlayer);
 
-            _DisplayScore();
+            _UpdateDisplayScore();
         }
         
         private void _InitializePlayers()
@@ -183,8 +179,9 @@ namespace CBS.Reinaldo.Reversi
 
         private void _BackToMainMenu()
         {
-            var mainMenu = new MainMenu();
+            Hide();
 
+            var mainMenu = new MainMenu();
             mainMenu.Show();
         }
         
@@ -206,7 +203,7 @@ namespace CBS.Reinaldo.Reversi
             return int.Parse(panel.Name);
         }
 
-        private void _DisplayScore()
+        private void _UpdateDisplayScore()
         {
             _WhitePlayerScoreLabel.Text = _WhitePlayer.AcquiredPanels.Count.ToString();
             _BlackPlayerScoreLabel.Text = _BlackPlayer.AcquiredPanels.Count.ToString();
