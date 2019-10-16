@@ -30,6 +30,7 @@ namespace CBS.Reinaldo.Reversi.Utility
                 if(await _EnableSouth(board, player, panelIndex)) count++;
                 if(await _EnableSouthWest(board, player, panelIndex)) count++;
                 if(await _EnableWest(board, player, panelIndex)) count++;
+                if(await _EnableNorthWest(board, player, panelIndex)) count++;
             }
             return count;
         }
